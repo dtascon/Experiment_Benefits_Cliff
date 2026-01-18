@@ -1,0 +1,313 @@
+{% extends "global/Page.html" %}
+
+{% block title %}
+Job Offer Decision
+{% endblock %}
+
+{% block content %}
+
+<div style="max-width: 1000px; margin: 0 auto; padding: 20px;">
+
+    <!-- Context Header - Enhanced with full demographics -->
+    <div style="background-color: #e3f2fd; padding: 20px; margin-bottom: 25px; border-left: 5px solid #2196f3; border-radius: 4px;">
+        <h3 style="margin-top: 0; color: #1565c0;">Your Household Information</h3>
+
+        <table style="width: 100%; line-height: 1.8;">
+            <tr>
+                <td style="padding: 5px 10px 5px 0; width: 40%;"><strong>Your age:</strong></td>
+                <td style="padding: 5px 0;">{{ player.adult_age }} years old</td>
+            </tr>
+            <tr>
+                <td style="padding: 5px 10px 5px 0;"><strong>Marital status:</strong></td>
+                <td style="padding: 5px 0;">
+                    {% if player.is_married %}
+                        Married
+                    {% else %}
+                        Single
+                    {% endif %}
+                </td>
+            </tr>
+            {% if player.is_married and player.spouse_age > 0 %}
+            <tr>
+                <td style="padding: 5px 10px 5px 0;"><strong>Spouse's age:</strong></td>
+                <td style="padding: 5px 0;">{{ player.spouse_age }} years old</td>
+            </tr>
+            {% endif %}
+            {% if player.other_adults > 0 %}
+            <tr>
+                <td style="padding: 5px 10px 5px 0;"><strong>Other adults in household:</strong></td>
+                <td style="padding: 5px 0;">
+                    {{ player.other_adults }} {% if player.other_adults == 1 %}adult{% else %}adults{% endif %}
+                    <span style="font-size: 0.9em; color: #666;">(e.g., parent, sibling, roommate)</span>
+                </td>
+            </tr>
+            {% endif %}
+            <tr>
+                <td style="padding: 5px 10px 5px 0;"><strong>Children in household:</strong></td>
+                <td style="padding: 5px 0;">
+                    {% if player.num_children > 0 %}
+                        {{ player.num_children }} {% if player.num_children == 1 %}child{% else %}children{% endif %}
+                    {% else %}
+                        No children
+                    {% endif %}
+                </td>
+            </tr>
+            {% if player.num_children > 0 %}
+            <tr>
+                <td style="padding: 5px 10px 5px 0;"><strong>Children's ages:</strong></td>
+                <td style="padding: 5px 0;">{{ player.child_ages_str }}</td>
+            </tr>
+            {% endif %}
+            <tr>
+                <td style="padding: 5px 10px 5px 0;"><strong>Total household size:</strong></td>
+                <td style="padding: 5px 0;">{{ player.household_size }} {% if player.household_size == 1 %}person{% else %}people{% endif %}</td>
+            </tr>
+            {% if player.has_disability %}
+            <tr>
+                <td style="padding: 5px 10px 5px 0;"><strong>Disability status:</strong></td>
+                <td style="padding: 5px 0;">You have a documented disability</td>
+            </tr>
+            {% endif %}
+            <tr>
+                <td style="padding: 5px 10px 5px 0;"><strong>Location:</strong></td>
+                <td style="padding: 5px 0;">{{ player.county }} County, {{ player.state }}</td>
+            </tr>
+        </table>
+
+        <div style="background-color: #bbdefb; padding: 10px; margin-top: 15px; border-radius: 3px;">
+            <p style="margin: 0; font-size: 0.95em; color: #1565c0;">
+                <strong>Note:</strong> You are the primary earner in this household. The job decision affects your income and your household's eligibility for benefits.
+            </p>
+        </div>
+    </div>
+
+    <!-- Scenario Introduction -->
+    <div style="background-color: #fff9e6; padding: 20px; margin-bottom: 25px; border-left: 5px solid #ffc107; border-radius: 4px;">
+        <h3 style="margin-top: 0; color: #f57c00;">Scenario</h3>
+        <p style="line-height: 1.6; margin-bottom: 12px;">
+            You have been working at your current job for the past year. You perform well and are valued by your employer.
+            <strong>Your employer has offered you a raise.</strong>
+        </p>
+        <p style="line-height: 1.6; margin-bottom: 12px;">
+            This is <strong>the same job with the same employer and the same responsibilities</strong> – you would continue doing the exact same work you do now.
+            The only change would be:
+        </p>
+        <ul style="line-height: 1.6; margin-left: 20px;">
+            <li><strong>Your hourly wage</strong> (how much you earn per hour)</li>
+        </ul>
+        <p style="line-height: 1.6; margin-bottom: 0; font-style: italic; color: #666;">
+            Everything else about your job remains the same: your work hours, your commute, your work relationships, your job duties, and your employer.
+        </p>
+    </div>
+
+    <h2 style="color: #333; border-bottom: 2px solid #ddd; padding-bottom: 10px;">Compare Your Options</h2>
+
+    <!-- Current Job Details -->
+    <div style="background-color: #f5f5f5; padding: 20px; margin: 20px 0; border-left: 5px solid #757575; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        <h3 style="margin-top: 0; color: #424242;">
+            <span style="background-color: #757575; color: white; padding: 5px 12px; border-radius: 3px; margin-right: 10px;">OPTION A</span>
+            Keep Your Current Job
+        </h3>
+
+        <div style="background-color: white; padding: 15px; border-radius: 4px; margin: 15px 0;">
+            <h4 style="margin-top: 0; color: #555;">Earnings</h4>
+            <table style="width: 100%; line-height: 1.8;">
+                <tr>
+                    <td style="padding: 5px 0;"><strong>Hourly wage:</strong></td>
+                    <td style="padding: 5px 0;">${{ player.current_hourly_wage }}/hour</td>
+                </tr>
+                <tr>
+                    <td style="padding: 5px 0;"><strong>Hours per week:</strong></td>
+                    <td style="padding: 5px 0;">{{ player.current_hours }} hours</td>
+                </tr>
+                <tr style="background-color: #f9f9f9;">
+                    <td style="padding: 8px 5px;"><strong>Monthly gross earnings:</strong></td>
+                    <td style="padding: 8px 5px;"><span style="font-size: 1.1em; color: #2e7d32; font-weight: bold;">${{ current_monthly_gross }}</span></td>
+                </tr>
+                <tr style="background-color: #f9f9f9;">
+                    <td style="padding: 8px 5px;"><strong>Annual gross earnings:</strong></td>
+                    <td style="padding: 8px 5px;"><span style="font-size: 1.1em; color: #2e7d32; font-weight: bold;">${{ current_annual_gross }}</span></td>
+                </tr>
+            </table>
+        </div>
+
+        {% if show_benefits %}
+        <div style="background-color: white; padding: 15px; border-radius: 4px;">
+            <h4 style="margin-top: 0; color: #555;">Monthly Public Benefits</h4>
+            <p style="font-size: 0.9em; color: #666; font-style: italic; margin-bottom: 12px;">
+                Based on your current earnings and household composition, you are eligible for:
+            </p>
+            <ul style="line-height: 1.8;">
+                <li>SNAP (food assistance): <strong>${{ player.cur_snap }}</strong></li>
+                <li>Medicaid/CHIP (health insurance): <strong>${{ player.cur_medicaid }}</strong></li>
+                {% if show_ccdf %}
+                <li>Child care subsidy (CCDF): <strong>${{ player.cur_ccdf }}</strong></li>
+                {% endif %}
+                {% if show_tanf %}
+                <li>TANF (cash assistance): <strong>${{ player.cur_tanf }}</strong></li>
+                {% endif %}
+                {% if show_wic %}
+                <li>WIC (nutrition program): <strong>${{ player.cur_wic }}</strong></li>
+                {% endif %}
+                {% if show_head_start %}
+                <li>Head Start (preschool): <strong>${{ player.cur_head_start }}</strong></li>
+                {% endif %}
+                <li>EITC (tax credit, monthly equivalent): <strong>${{ player.cur_eitc }}</strong></li>
+                {% if show_disability %}
+                <li>SSDI (disability insurance): <strong>${{ player.cur_ssdi }}</strong></li>
+                <li>SSI (supplemental income): <strong>${{ player.cur_ssi }}</strong></li>
+                {% endif %}
+            </ul>
+            <div style="background-color: #e8f5e9; padding: 10px; border-left: 4px solid #4caf50; margin-top: 10px;">
+                <strong>Total monthly benefits: <span style="color: #2e7d32; font-size: 1.1em;">${{ player.cur_benefits_total }}</span></strong>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- New Offer Details -->
+    <div style="background-color: #e3f2fd; padding: 20px; margin: 20px 0; border-left: 5px solid #1976d2; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        <h3 style="margin-top: 0; color: #1565c0;">
+            <span style="background-color: #1976d2; color: white; padding: 5px 12px; border-radius: 3px; margin-right: 10px;">OPTION B</span>
+            Accept the Raise (Same Job, Same Hours, Higher Wage)
+        </h3>
+
+        <div style="background-color: white; padding: 15px; border-radius: 4px; margin: 15px 0;">
+            <h4 style="margin-top: 0; color: #555;">Earnings</h4>
+            <table style="width: 100%; line-height: 1.8;">
+                <tr>
+                    <td style="padding: 5px 0;"><strong>Hourly wage:</strong></td>
+                    <td style="padding: 5px 0;">${{ player.offer_hourly_wage }}/hour</td>
+                </tr>
+                <tr>
+                    <td style="padding: 5px 0;"><strong>Hours per week:</strong></td>
+                    <td style="padding: 5px 0;">{{ player.offer_hours }} hours <span style="color: #1976d2; font-weight: bold;">(same as current)</span></td>
+                </tr>
+                <tr style="background-color: #e3f2fd;">
+                    <td style="padding: 8px 5px;"><strong>Monthly gross earnings:</strong></td>
+                    <td style="padding: 8px 5px;"><span style="font-size: 1.1em; color: #1565c0; font-weight: bold;">${{ offer_monthly_gross }}</span></td>
+                </tr>
+                <tr style="background-color: #e3f2fd;">
+                    <td style="padding: 8px 5px;"><strong>Annual gross earnings:</strong></td>
+                    <td style="padding: 8px 5px;"><span style="font-size: 1.1em; color: #1565c0; font-weight: bold;">${{ offer_annual_gross }}</span></td>
+                </tr>
+            </table>
+        </div>
+
+        {% if show_benefits %}
+        <div style="background-color: white; padding: 15px; border-radius: 4px;">
+            <h4 style="margin-top: 0; color: #555;">Monthly Public Benefits</h4>
+            <p style="font-size: 0.9em; color: #666; font-style: italic; margin-bottom: 12px;">
+                Based on the new earnings level and your household composition, you would be eligible for:
+            </p>
+            <ul style="line-height: 1.8;">
+                <li>SNAP (food assistance): <strong>${{ player.off_snap }}</strong></li>
+                <li>Medicaid/CHIP (health insurance): <strong>${{ player.off_medicaid }}</strong></li>
+                {% if show_ccdf %}
+                <li>Child care subsidy (CCDF): <strong>${{ player.off_ccdf }}</strong></li>
+                {% endif %}
+                {% if show_tanf %}
+                <li>TANF (cash assistance): <strong>${{ player.off_tanf }}</strong></li>
+                {% endif %}
+                {% if show_wic %}
+                <li>WIC (nutrition program): <strong>${{ player.off_wic }}</strong></li>
+                {% endif %}
+                {% if show_head_start %}
+                <li>Head Start (preschool): <strong>${{ player.off_head_start }}</strong></li>
+                {% endif %}
+                <li>EITC (tax credit, monthly equivalent): <strong>${{ player.off_eitc }}</strong></li>
+                {% if show_disability %}
+                <li>SSDI (disability insurance): <strong>${{ player.off_ssdi }}</strong></li>
+                <li>SSI (supplemental income): <strong>${{ player.off_ssi }}</strong></li>
+                {% endif %}
+            </ul>
+            <div style="background-color: #e3f2fd; padding: 10px; border-left: 4px solid #1976d2; margin-top: 10px;">
+                <strong>Total monthly benefits: <span style="color: #1565c0; font-size: 1.1em;">${{ player.off_benefits_total }}</span></strong>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Decision Section -->
+    <div style="background-color: #fff3e0; padding: 25px; margin: 30px 0; border: 3px solid #ff9800; border-radius: 4px;">
+        <h3 style="margin-top: 0; color: #e65100;">
+            <span style="font-size: 1.3em;">📋</span> Your Decision
+        </h3>
+
+        <p style="font-size: 1.05em; line-height: 1.6; margin-bottom: 20px;">
+            Considering everything you've seen above – the change in earnings, the change in benefits, and any other factors that matter to you and your household – <strong>which option would you choose?</strong>
+        </p>
+
+        <div id="decision-question">
+            {{ formfield 'accept_offer' }}
+        </div>
+
+        <div id="perception-section" style="display: none; margin-top: 30px; padding-top: 25px; border-top: 2px solid #ffb74d;">
+            <h4 style="color: #e65100;">Now, help us understand your perception</h4>
+
+            <div id="accept-text" style="display: none;">
+                <p style="background-color: #e3f2fd; padding: 15px; border-left: 4px solid #1976d2; border-radius: 3px;">
+                    You chose to <strong>ACCEPT</strong> the raise (Option B).
+                    <br><br>
+                    Thinking about <strong>your household's total monthly resources</strong> (both your take-home earnings AND all benefits combined),
+                    what do you think the change would be if you accept this raise compared to keeping your current wage?
+                </p>
+            </div>
+
+            <div id="reject-text" style="display: none;">
+                <p style="background-color: #f5f5f5; padding: 15px; border-left: 4px solid #757575; border-radius: 3px;">
+                    You chose to <strong>KEEP</strong> your current wage (Option A).
+                    <br><br>
+                    Thinking about <strong>your household's total monthly resources</strong> (both your take-home earnings AND all benefits combined),
+                    what do you think the change would be if you had accepted the raise instead?
+                </p>
+            </div>
+
+            {{ formfield 'perceived_delta_true_net_income' }}
+
+            <div style="background-color: #fff; padding: 15px; margin-top: 15px; border: 1px solid #ddd; border-radius: 3px;">
+                <p style="margin: 0; font-size: 0.95em; color: #555; line-height: 1.6;">
+                    <strong>💡 Instructions:</strong>
+                </p>
+                <ul style="margin: 8px 0 0 20px; font-size: 0.95em; color: #555; line-height: 1.6;">
+                    <li>Include BOTH your take-home earnings (after taxes) AND all public benefits</li>
+                    <li>Enter a positive number if you think total resources would INCREASE (e.g., 150)</li>
+                    <li>Enter a negative number if you think total resources would DECREASE (e.g., -200)</li>
+                    <li>Enter 0 if you think they would stay about the same</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    {% next_button %}
+
+</div>
+
+<script>
+    const acceptRadio = document.querySelector('input[name="accept_offer"][value="1"]');
+    const rejectRadio = document.querySelector('input[name="accept_offer"][value="0"]');
+    const perceptionSection = document.getElementById('perception-section');
+    const acceptText = document.getElementById('accept-text');
+    const rejectText = document.getElementById('reject-text');
+
+    function updatePerceptionSection() {
+        if (acceptRadio.checked) {
+            perceptionSection.style.display = 'block';
+            acceptText.style.display = 'block';
+            rejectText.style.display = 'none';
+        } else if (rejectRadio.checked) {
+            perceptionSection.style.display = 'block';
+            acceptText.style.display = 'none';
+            rejectText.style.display = 'block';
+        }
+    }
+
+    acceptRadio.addEventListener('change', updatePerceptionSection);
+    rejectRadio.addEventListener('change', updatePerceptionSection);
+
+    if (acceptRadio.checked || rejectRadio.checked) {
+        updatePerceptionSection();
+    }
+</script>
+
+{% endblock %}

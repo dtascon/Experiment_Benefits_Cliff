@@ -1,0 +1,67 @@
+{% extends "global/Page.html" %}
+
+{% block title %}Study Completed!{% endblock %}
+
+{% block content %}
+
+<div style="max-width: 800px; margin: 0 auto; padding: 30px; text-align: center;">
+
+    <div style="background-color: #e8f5e9; padding: 30px; border-radius: 8px; margin-bottom: 30px;">
+        <h1 style="color: #2e7d32; margin-top: 0;">
+            ✅ Study Completed Successfully!
+        </h1>
+        <p style="font-size: 1.2em; color: #666;">
+            Thank you for your participation in this research study.
+        </p>
+    </div>
+
+    <div style="background-color: #fff3cd; padding: 30px; border: 3px solid #ffc107; border-radius: 8px; margin-bottom: 30px;">
+        <h2 style="color: #856404; margin-top: 0;">
+            📋 Your Prolific Completion Code
+        </h2>
+        
+        <div style="background-color: #fff; padding: 25px; margin: 20px 0; border-radius: 5px; border: 2px dashed #ffc107;">
+            <p style="font-size: 0.9em; color: #666; margin-bottom: 15px;">
+                COPY THIS CODE:
+            </p>
+            <p style="font-size: 2.5em; font-weight: bold; color: #856404; letter-spacing: 5px; margin: 0; font-family: 'Courier New', monospace;">
+                {{ completion_code }}
+            </p>
+        </div>
+    </div>
+
+    <div style="background-color: #e3f2fd; padding: 25px; border-left: 5px solid #2196f3; border-radius: 4px; text-align: left;">
+        <h3 style="margin-top: 0; color: #1565c0;">
+            📝 Important Next Steps:
+        </h3>
+        
+        <ol style="line-height: 2; font-size: 1.1em; color: #333;">
+            <li><strong>Copy the code above</strong> (click and drag to select, then Ctrl+C or Cmd+C)</li>
+            <li><strong>Return to Prolific</strong> (click the button below or go back to your Prolific tab)</li>
+            <li><strong>Paste the code</strong> in the completion box on Prolific</li>
+            <li><strong>Click Submit</strong> to receive your payment</li>
+        </ol>
+        
+        <div style="background-color: #fff; padding: 15px; margin-top: 20px; border-radius: 3px; border: 1px solid #90caf9;">
+            <p style="margin: 0; font-size: 0.95em; color: #1565c0;">
+                <strong>⚠️ Without submitting this code in Prolific, you will NOT receive payment!</strong>
+            </p>
+        </div>
+    </div>
+
+    <div style="margin-top: 40px;">
+        <a href="{{ prolific_completion_url }}" 
+           target="_blank" 
+           style="display: inline-block; background-color: #2196f3; color: white; padding: 20px 40px; font-size: 1.3em; text-decoration: none; border-radius: 5px; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            Return to Prolific with Code
+        </a>
+    </div>
+
+    <p style="margin-top: 40px; font-size: 0.9em; color: #999;">
+        If you encounter any technical issues, please contact the researcher with your completion code:<br>
+        <strong>{{ completion_code }}</strong>
+    </p>
+
+</div>
+
+{% endblock %}

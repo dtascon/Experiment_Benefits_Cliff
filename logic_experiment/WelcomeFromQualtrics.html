@@ -1,0 +1,61 @@
+{% extends "global/Page.html" %}
+
+{% block title %}Welcome to the Study{% endblock %}
+
+{% block content %}
+
+<div style="max-width: 800px; margin: 0 auto; padding: 30px;">
+
+    <div style="background-color: #e3f2fd; padding: 25px; border-left: 5px solid #2196f3; border-radius: 4px; margin-bottom: 30px;">
+        <h2 style="margin-top: 0; color: #1565c0;">Welcome!</h2>
+
+        <p style="font-size: 1.1em; line-height: 1.7;">
+            Thank you for completing the initial demographic survey.
+        </p>
+
+        <p style="font-size: 1.05em; line-height: 1.7;">
+            You will now participate in a <strong>negotiation decision-making exercise</strong> where you'll review
+            job scenarios and make choices about accepting wage offers.
+        </p>
+    </div>
+
+    <div style="background-color: #fff3e0; padding: 20px; border-left: 5px solid #ff9800; border-radius: 4px; margin-bottom: 30px;">
+        <h3 style="margin-top: 0; color: #e65100;">
+            <span style="font-size: 1.3em;">⏱️</span> What to Expect
+        </h3>
+
+        <ul style="line-height: 1.8; font-size: 1.05em;">
+            <li><strong>Time:</strong> This exercise will take approximately <strong>15-20 minutes</strong></li>
+            <li><strong>Task:</strong> You'll review ONE scenario involving a job offer decision</li>
+            <li><strong>Information:</strong> You'll see detailed information about earnings and public benefits</li>
+            <li><strong>Decision:</strong> You'll choose whether to accept or reject the offer</li>
+        </ul>
+    </div>
+
+    <div style="background-color: #e8f5e9; padding: 20px; border-left: 5px solid #4caf50; border-radius: 4px;">
+        <h3 style="margin-top: 0; color: #2e7d32;">
+            <span style="font-size: 1.3em;">💰</span> Important: Completion Code
+        </h3>
+
+        <p style="font-size: 1.05em; line-height: 1.7;">
+            At the end of this study, you will receive a <strong style="color: #2e7d32;">unique completion code</strong>.
+        </p>
+
+        <div style="background-color: #fff; padding: 15px; margin-top: 15px; border-radius: 3px;">
+            <p style="margin: 0; font-size: 1.05em;">
+                <strong>⚠️ You MUST enter this code in Prolific to receive your payment.</strong>
+            </p>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 40px;">
+        <p style="font-size: 1.1em; color: #666;">
+            Please complete this study in one sitting without interruptions.
+        </p>
+    </div>
+
+    {{ next_button }}
+
+</div>
+
+{% endblock %}
