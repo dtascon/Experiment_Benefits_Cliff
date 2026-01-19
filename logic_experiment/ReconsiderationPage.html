@@ -1,0 +1,186 @@
+{% extends "global/Page.html" %}
+
+{% block title %}
+Final Questions
+{% endblock %}
+
+{% block content %}
+
+<div style="max-width: 1000px; margin: 0 auto; padding: 20px;">
+
+    <!-- Progress Indicator -->
+    <div style="background-color: #f0f0f0; padding: 15px; margin-bottom: 25px; border-radius: 4px;">
+        <p style="margin: 0; font-size: 0.95em; color: #666;">
+            <strong>Part 4 of 4:</strong> Final questions about your decision
+        </p>
+    </div>
+
+    <!-- Summary of Previous Decisions -->
+    <div style="background-color: #e3f2fd; padding: 25px; margin-bottom: 30px; border-left: 5px solid #2196f3; border-radius: 4px;">
+        <h3 style="margin-top: 0; color: #1565c0;">📋 Summary of Your Decisions</h3>
+        
+        <div style="background-color: white; padding: 20px; border-radius: 8px; margin-top: 15px;">
+            <table style="width: 100%; line-height: 2.5;">
+                <tr>
+                    <td style="padding: 10px 0; width: 50%;"><strong>Part 1 decision (Text only):</strong></td>
+                    <td style="padding: 10px 0;">
+                        <span style="font-size: 1.1em; font-weight: bold;">
+                            {{ stage1_decision_text }}
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px 0;"><strong>Part 2 decision (With additional info):</strong></td>
+                    <td style="padding: 10px 0;">
+                        <span style="font-size: 1.1em; font-weight: bold;">
+                            {{ stage2_decision_text }}
+                        </span>
+                    </td>
+                </tr>
+                <tr style="background-color: #f9f9f9;">
+                    <td style="padding: 15px 10px;"><strong>Actual financial impact:</strong></td>
+                    <td style="padding: 15px 10px;">
+                        <span style="font-size: 1.3em; font-weight: bold; 
+                            {% if player.delta_true_net_income > 0 %}color: #2e7d32;{% elif player.delta_true_net_income < 0 %}color: #c62828;{% else %}color: #666;{% endif %}">
+                            {% if player.delta_true_net_income > 0 %}+{% endif %}${{ player.delta_true_net_income }}/month
+                        </span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- Q: Would you like to change your decision? -->
+    <div style="background-color: #fff3e0; padding: 25px; margin: 30px 0; border: 3px solid #ff9800; border-radius: 4px;">
+        <h3 style="margin-top: 0; color: #e65100;">
+            <span style="font-size: 1.3em;">🤔</span> Now that you know the actual financial impact...
+        </h3>
+
+        <p style="font-size: 1.1em; line-height: 1.6; margin-bottom: 20px;">
+            Would you like to change your decision?
+        </p>
+
+        {{ formfield 'changed_mind' }}
+
+        <div id="final-decision-section" style="display: none; margin-top: 25px; padding-top: 25px; border-top: 2px solid #ffb74d;">
+            <h4 style="color: #e65100;">What is your final decision?</h4>
+            {{ formfield 'final_decision' }}
+        </div>
+    </div>
+
+    <!-- Q3: Reasoning -->
+    <div style="background-color: #f9f9f9; padding: 25px; margin: 30px 0; border-radius: 8px;">
+        <h3 style="margin-top: 0; color: #333;">
+            <span style="font-size: 1.3em;">💭</span> Why did you make this choice?
+        </h3>
+        <p style="font-size: 0.95em; color: #666; margin-bottom: 20px;">
+            Select all that apply:
+        </p>
+
+        <div style="background-color: white; padding: 25px; border-radius: 8px;">
+            <div style="margin-bottom: 15px;">
+                {{ formfield 'reason_more_money' }}
+            </div>
+            <div style="margin-bottom: 15px;">
+                {{ formfield 'reason_same_money' }}
+            </div>
+            <div style="margin-bottom: 15px;">
+                {{ formfield 'reason_future_opportunities' }}
+            </div>
+            <div style="margin-bottom: 15px;">
+                {{ formfield 'reason_salary_important' }}
+            </div>
+            <div style="margin-bottom: 15px;">
+                {{ formfield 'reason_reduce_benefits' }}
+            </div>
+            <div style="margin-bottom: 15px;">
+                {{ formfield 'reason_job_title' }}
+            </div>
+            <div style="margin-bottom: 15px;">
+                {{ formfield 'reason_not_sure' }}
+            </div>
+            
+            <div style="margin-top: 25px; padding-top: 20px; border-top: 1px solid #ddd;">
+                {{ formfield 'reason_other_text' }}
+            </div>
+        </div>
+    </div>
+
+    <!-- Q4: Future Expectations -->
+    <div style="background-color: #e8f5e9; padding: 25px; margin: 30px 0; border-left: 5px solid #4caf50; border-radius: 4px;">
+        <h3 style="margin-top: 0; color: #2e7d32;">
+            <span style="font-size: 1.3em;">🔮</span> Thinking about the future...
+        </h3>
+
+        <p style="font-size: 1.05em; line-height: 1.6; margin-bottom: 20px; color: #2e7d32;">
+            Compared to your current job, how do you think accepting this offer would affect your total income (salary + benefits) in <strong>3 years</strong>?
+        </p>
+
+        <div style="background-color: white; padding: 20px; border-radius: 8px;">
+            {{ formfield 'future_expectation' }}
+        </div>
+    </div>
+
+    <!-- Q5: Willingness to Sacrifice (conditional) -->
+    <div id="sacrifice-section" style="display: none;">
+        <div style="background-color: #fff3e0; padding: 25px; margin: 30px 0; border-left: 5px solid #ff9800; border-radius: 4px;">
+            <h3 style="margin-top: 0; color: #e65100;">
+                <span style="font-size: 1.3em;">⚖️</span> Trade-off Question
+            </h3>
+
+            <p style="font-size: 1.05em; line-height: 1.6; margin-bottom: 15px; color: #e65100;">
+                This job offer would result in a <strong>net loss of monthly resources</strong>.
+            </p>
+
+            <p style="font-size: 1.05em; line-height: 1.6; margin-bottom: 20px;">
+                Given the opportunities this job offers, what is the <strong>MAXIMUM monthly income loss</strong> you would be willing to accept?
+            </p>
+
+            <div style="background-color: white; padding: 20px; border-radius: 8px;">
+                {{ formfield 'max_acceptable_loss' }}
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin: 40px 0;">
+        <p style="font-size: 1.1em; color: #666;">
+            Thank you for your thoughtful responses!
+        </p>
+    </div>
+
+    {% next_button %}
+
+</div>
+
+<script>
+    // Show final decision section if they want to change
+    const changedMindRadios = document.querySelectorAll('input[name="changed_mind"]');
+    const finalDecisionSection = document.getElementById('final-decision-section');
+    const sacrificeSection = document.getElementById('sacrifice-section');
+
+    function updateFinalDecisionSection() {
+        const changedYes = document.querySelector('input[name="changed_mind"][value="True"]');
+        if (changedYes && changedYes.checked) {
+            finalDecisionSection.style.display = 'block';
+        } else {
+            finalDecisionSection.style.display = 'none';
+        }
+    }
+
+    changedMindRadios.forEach(radio => {
+        radio.addEventListener('change', updateFinalDecisionSection);
+    });
+
+    // Show sacrifice section if delta is negative
+    const deltaTrue = {{ player.delta_true_net_income }};
+    if (deltaTrue < 0) {
+        sacrificeSection.style.display = 'block';
+    }
+
+    // Initialize on page load
+    if (document.querySelector('input[name="changed_mind"]:checked')) {
+        updateFinalDecisionSection();
+    }
+</script>
+
+{% endblock %}
