@@ -1,354 +1,225 @@
 {% extends "global/Page.html" %}
 
 {% block title %}
-Financial Impact Results
+Job Offer Decision - Part 2
 {% endblock %}
 
 {% block content %}
 
-<div style="max-width: 900px; margin: 0 auto; padding: 20px;">
+<div style="max-width: 1000px; margin: 0 auto; padding: 20px;">
 
     <!-- Progress Indicator -->
     <div style="background-color: #f0f0f0; padding: 15px; margin-bottom: 25px; border-radius: 4px;">
         <p style="margin: 0; font-size: 0.95em; color: #666;">
-            <strong>Part 3 of 4:</strong> Review the actual financial impact
+            <strong>Part 2 of 4:</strong> Please review the same scenario with additional visual information
         </p>
     </div>
 
-    <div style="background-color: #e3f2fd; padding: 15px; margin-bottom: 20px; border-left: 4px solid #2196f3;">
-        <strong>Your Situation:</strong> {{ player.family_description }} in {{ player.county }} County, {{ player.state }}
-    </div>
-
-    <h2 style="color: #333; border-bottom: 2px solid #ddd; padding-bottom: 10px;">Your Responses</h2>
-
-    <!-- Stage 1 and Stage 2 Responses -->
-    <div style="background-color: #f9f9f9; padding: 25px; margin: 20px 0; border-radius: 8px;">
-
-        <!-- Stage 1 Response -->
-        <div style="background-color: white; padding: 20px; margin-bottom: 20px; border-radius: 8px; border-left: 4px solid #757575;">
-            <h3 style="margin-top: 0; color: #424242;">Part 1 - Your Initial Response (Text Only)</h3>
-
-            <table style="width: 100%; line-height: 2;">
-                <tr>
-                    <td style="padding: 10px 0; width: 50%;"><strong>Your decision:</strong></td>
-                    <td style="padding: 10px 0;">
-                        {% if player.stage1_decision == 1 %}
-                            <span style="color: #1976d2; font-weight: bold;">ACCEPTED the offer</span>
-                        {% else %}
-                            <span style="color: #757575; font-weight: bold;">KEPT current job</span>
-                        {% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <td style="padding: 10px 0;"><strong>You predicted net change:</strong></td>
-                    <td style="padding: 10px 0;">
-                        <span style="font-size: 1.2em; font-weight: bold;">
-                            {% if player.stage1_perceived_delta > 0 %}+{% endif %}${{ player.stage1_perceived_delta }}
-                        </span>
-                    </td>
-                </tr>
-            </table>
-        </div>
-
-        <!-- Stage 2 Response -->
-        <div style="background-color: white; padding: 20px; border-radius: 8px; border-left: 4px solid #1976d2;">
-            <h3 style="margin-top: 0; color: #1565c0;">
-                Part 2 - Your Response After
-                {% if treatment_format == "dashboard" %}
-                    <span style="background-color: #4caf50; color: white; padding: 3px 10px; border-radius: 3px; font-size: 0.9em;">Dashboard</span>
-                {% else %}
-                    <span style="background-color: #2196f3; color: white; padding: 3px 10px; border-radius: 3px; font-size: 0.9em;">AI Analysis</span>
-                {% endif %}
-            </h3>
-
-            <table style="width: 100%; line-height: 2;">
-                <tr>
-                    <td style="padding: 10px 0; width: 50%;"><strong>Your decision:</strong></td>
-                    <td style="padding: 10px 0;">
-                        {% if player.stage2_decision == 1 %}
-                            <span style="color: #1976d2; font-weight: bold;">ACCEPTED the offer</span>
-                        {% else %}
-                            <span style="color: #757575; font-weight: bold;">KEPT current job</span>
-                        {% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <td style="padding: 10px 0;"><strong>You predicted net change:</strong></td>
-                    <td style="padding: 10px 0;">
-                        <span style="font-size: 1.2em; font-weight: bold;">
-                            {% if player.stage2_perceived_delta > 0 %}+{% endif %}${{ player.stage2_perceived_delta }}
-                        </span>
-                    </td>
-                </tr>
-            </table>
-
-            <!-- Did they change their decision? -->
-            {% if player.stage1_decision != player.stage2_decision %}
-            <div style="background-color: #fff3e0; padding: 12px; margin-top: 15px; border-radius: 4px;">
-                <strong style="color: #e65100;">📝 Note:</strong> You changed your decision after seeing the additional information.
-            </div>
-            {% endif %}
-        </div>
-    </div>
-
-    <!-- TRUE FINANCIAL IMPACT -->
-    <div style="background-color: #e8f5e9; padding: 25px; margin: 20px 0; border: 3px solid #4caf50; border-radius: 8px;">
-        <h2 style="margin-top: 0; color: #2e7d32; text-align: center;">
-            ✅ Actual Financial Impact
-        </h2>
-
-        <div style="text-align: center; margin: 30px 0;">
-            <div style="font-size: 1.3em; color: #555; margin-bottom: 10px;">
-                True change in monthly total resources:
-            </div>
-            <div style="font-size: 3.5em; font-weight: bold; margin: 15px 0;
-                {% if player.delta_true_net_income > 0 %}color: #2e7d32;{% elif player.delta_true_net_income < 0 %}color: #c62828;{% else %}color: #666;{% endif %}">
-                {% if player.delta_true_net_income > 0 %}+{% endif %}${{ player.delta_true_net_income }}
-            </div>
-            <div style="font-size: 1.1em; color: #666;">per month</div>
-        </div>
-
-        <!-- Breakdown -->
-        <table style="width: 100%; border-collapse: collapse; margin: 25px 0; background-color: white;">
-            <tr style="border-bottom: 2px solid #4caf50; background-color: #f1f8f4;">
-                <th style="text-align: left; padding: 12px;">Category</th>
-                <th style="text-align: right; padding: 12px;">Change</th>
+    <!-- Context Header -->
+    <div style="background-color: #e3f2fd; padding: 20px; margin-bottom: 25px; border-left: 5px solid #2196f3; border-radius: 4px;">
+        <h3 style="margin-top: 0; color: #1565c0;">Your Household Information</h3>
+        <table style="width: 100%; line-height: 1.8;">
+            <tr>
+                <td style="padding: 5px 10px 5px 0; width: 40%;"><strong>Your age:</strong></td>
+                <td style="padding: 5px 0;">{{ player.adult_age }} years old</td>
             </tr>
-            <tr style="border-bottom: 1px solid #ddd;">
-                <td style="padding: 12px;">Net earnings (after taxes)</td>
-                <td style="text-align: right; padding: 12px; font-weight: bold;">
-                    {% if player.delta_net_earnings >= 0 %}
-                        <span style="color: #2e7d32;">+${{ player.delta_net_earnings }}</span>
-                    {% else %}
-                        <span style="color: #c62828;">${{ player.delta_net_earnings }}</span>
-                    {% endif %}
-                </td>
-            </tr>
-            <tr style="border-bottom: 1px solid #ddd;">
-                <td style="padding: 12px;">Total benefits</td>
-                <td style="text-align: right; padding: 12px; font-weight: bold;">
-                    {% if player.delta_benefits_total >= 0 %}
-                        <span style="color: #2e7d32;">+${{ player.delta_benefits_total }}</span>
-                    {% else %}
-                        <span style="color: #c62828;">${{ player.delta_benefits_total }}</span>
-                    {% endif %}
-                </td>
-            </tr>
-            <tr style="border-top: 3px solid #4caf50; background-color: #f1f8f4;">
-                <td style="padding: 15px;"><strong style="font-size: 1.1em;">Total net income change</strong></td>
-                <td style="text-align: right; padding: 15px;">
-                    <strong style="font-size: 1.3em;">
-                    {% if player.delta_true_net_income >= 0 %}
-                        <span style="color: #2e7d32;">+${{ player.delta_true_net_income }}</span>
-                    {% else %}
-                        <span style="color: #c62828;">${{ player.delta_true_net_income }}</span>
-                    {% endif %}
-                    </strong>
-                </td>
+            <tr>
+                <td style="padding: 5px 10px 5px 0;"><strong>Location:</strong></td>
+                <td style="padding: 5px 0;">{{ player.county }} County, {{ player.state }}</td>
             </tr>
         </table>
-
-        <!-- Detailed Benefit Breakdown -->
-        <details style="margin-top: 20px;">
-            <summary style="cursor: pointer; font-weight: bold; color: #2e7d32; padding: 12px; background-color: white; border-radius: 4px; border: 1px solid #4caf50;">
-                📋 View Detailed Benefit Changes
-            </summary>
-            <div style="padding: 20px; background-color: white; margin-top: 10px; border-radius: 4px; border: 1px solid #ddd;">
-                <table style="width: 100%; border-collapse: collapse;">
-                    <tr style="border-bottom: 2px solid #333; background-color: #f5f5f5;">
-                        <th style="text-align: left; padding: 10px;">Program</th>
-                        <th style="text-align: right; padding: 10px;">Current Job</th>
-                        <th style="text-align: right; padding: 10px;">New Offer</th>
-                        <th style="text-align: right; padding: 10px;">Change</th>
-                    </tr>
-                    <tr style="border-bottom: 1px solid #ddd;">
-                        <td style="padding: 10px;">SNAP</td>
-                        <td style="text-align: right; padding: 10px;">${{ player.cur_snap }}</td>
-                        <td style="text-align: right; padding: 10px;">${{ player.off_snap }}</td>
-                        <td style="text-align: right; padding: 10px; font-weight: bold;">
-                            {% if delta_snap > 0 %}+{% endif %}${{ delta_snap }}
-                        </td>
-                    </tr>
-                    <tr style="border-bottom: 1px solid #ddd;">
-                        <td style="padding: 10px;">Medicaid/CHIP</td>
-                        <td style="text-align: right; padding: 10px;">${{ player.cur_medicaid }}</td>
-                        <td style="text-align: right; padding: 10px;">${{ player.off_medicaid }}</td>
-                        <td style="text-align: right; padding: 10px; font-weight: bold;">
-                            {% if delta_medicaid > 0 %}+{% endif %}${{ delta_medicaid }}
-                        </td>
-                    </tr>
-                    {% if show_ccdf %}
-                    <tr style="border-bottom: 1px solid #ddd;">
-                        <td style="padding: 10px;">CCDF (childcare)</td>
-                        <td style="text-align: right; padding: 10px;">${{ player.cur_ccdf }}</td>
-                        <td style="text-align: right; padding: 10px;">${{ player.off_ccdf }}</td>
-                        <td style="text-align: right; padding: 10px; font-weight: bold;">
-                            {% if delta_ccdf > 0 %}+{% endif %}${{ delta_ccdf }}
-                        </td>
-                    </tr>
-                    {% endif %}
-                    {% if show_tanf %}
-                    <tr style="border-bottom: 1px solid #ddd;">
-                        <td style="padding: 10px;">TANF (cash)</td>
-                        <td style="text-align: right; padding: 10px;">${{ player.cur_tanf }}</td>
-                        <td style="text-align: right; padding: 10px;">${{ player.off_tanf }}</td>
-                        <td style="text-align: right; padding: 10px; font-weight: bold;">
-                            {% if delta_tanf > 0 %}+{% endif %}${{ delta_tanf }}
-                        </td>
-                    </tr>
-                    {% endif %}
-                    {% if show_wic %}
-                    <tr style="border-bottom: 1px solid #ddd;">
-                        <td style="padding: 10px;">WIC (nutrition)</td>
-                        <td style="text-align: right; padding: 10px;">${{ player.cur_wic }}</td>
-                        <td style="text-align: right; padding: 10px;">${{ player.off_wic }}</td>
-                        <td style="text-align: right; padding: 10px; font-weight: bold;">
-                            {% if delta_wic > 0 %}+{% endif %}${{ delta_wic }}
-                        </td>
-                    </tr>
-                    {% endif %}
-                    {% if show_head_start %}
-                    <tr style="border-bottom: 1px solid #ddd;">
-                        <td style="padding: 10px;">Head Start</td>
-                        <td style="text-align: right; padding: 10px;">${{ player.cur_head_start }}</td>
-                        <td style="text-align: right; padding: 10px;">${{ player.off_head_start }}</td>
-                        <td style="text-align: right; padding: 10px; font-weight: bold;">
-                            {% if delta_head_start > 0 %}+{% endif %}${{ delta_head_start }}
-                        </td>
-                    </tr>
-                    {% endif %}
-                    <tr style="border-bottom: 1px solid #ddd;">
-                        <td style="padding: 10px;">EITC</td>
-                        <td style="text-align: right; padding: 10px;">${{ player.cur_eitc }}</td>
-                        <td style="text-align: right; padding: 10px;">${{ player.off_eitc }}</td>
-                        <td style="text-align: right; padding: 10px; font-weight: bold;">
-                            {% if delta_eitc > 0 %}+{% endif %}${{ delta_eitc }}
-                        </td>
-                    </tr>
-                    {% if show_disability %}
-                    <tr style="border-bottom: 1px solid #ddd;">
-                        <td style="padding: 10px;">SSDI</td>
-                        <td style="text-align: right; padding: 10px;">${{ player.cur_ssdi }}</td>
-                        <td style="text-align: right; padding: 10px;">${{ player.off_ssdi }}</td>
-                        <td style="text-align: right; padding: 10px; font-weight: bold;">
-                            {% if delta_ssdi > 0 %}+{% endif %}${{ delta_ssdi }}
-                        </td>
-                    </tr>
-                    <tr style="border-bottom: 1px solid #ddd;">
-                        <td style="padding: 10px;">SSI</td>
-                        <td style="text-align: right; padding: 10px;">${{ player.cur_ssi }}</td>
-                        <td style="text-align: right; padding: 10px;">${{ player.off_ssi }}</td>
-                        <td style="text-align: right; padding: 10px; font-weight: bold;">
-                            {% if delta_ssi > 0 %}+{% endif %}${{ delta_ssi }}
-                        </td>
-                    </tr>
-                    {% endif %}
-                    <tr style="border-top: 3px solid #333; background-color: #f5f5f5; font-weight: bold;">
-                        <td style="padding: 12px;">TOTAL BENEFITS</td>
-                        <td style="text-align: right; padding: 12px;">${{ player.cur_benefits_total }}</td>
-                        <td style="text-align: right; padding: 12px;">${{ player.off_benefits_total }}</td>
-                        <td style="text-align: right; padding: 12px; font-size: 1.1em;">
-                            {% if player.delta_benefits_total > 0 %}+{% endif %}${{ player.delta_benefits_total }}
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </details>
-
-        <!-- Cliff Warning if applicable -->
-        {% if player.is_cliff %}
-        <div style="background-color: #fff3cd; padding: 20px; margin-top: 25px; border-left: 5px solid #ffc107; border-radius: 4px;">
-            <p style="margin: 0; font-weight: bold; font-size: 1.1em; color: #856404;">⚠️ This was a "benefit cliff" scenario</p>
-            <p style="margin: 10px 0 0 0; font-size: 1em; color: #856404;">
-                Earnings would increase by ${{ player.delta_net_earnings }}/month, but total income would <strong>decrease by ${{ delta_abs }}/month</strong> due to benefit losses.
-            </p>
-            <p style="margin: 10px 0 0 0; font-size: 0.95em; color: #856404;">
-                Programs affected: <strong>{{ player.programs_lost }}</strong> program(s) completely lost, <strong>{{ player.programs_reduced }}</strong> program(s) reduced.
-            </p>
-        </div>
-        {% endif %}
     </div>
 
-    <!-- Perception Accuracy -->
-    <div style="background-color: #f9f9f9; padding: 25px; margin: 20px 0; border-radius: 8px;">
-        <h3 style="margin-top: 0; color: #333;">📊 Your Prediction Accuracy</h3>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-            <!-- Stage 1 Accuracy -->
-            <div style="background-color: white; padding: 20px; border-radius: 8px; border-left: 4px solid #757575;">
-                <h4 style="margin-top: 0; color: #424242;">Part 1 (Text Only)</h4>
-                <p style="margin: 10px 0;">
-                    <strong>You predicted:</strong>
-                    {% if player.stage1_perceived_delta > 0 %}+{% endif %}${{ player.stage1_perceived_delta }}
-                </p>
-                <p style="margin: 10px 0;">
-                    <strong>Actual change:</strong>
-                    {% if player.delta_true_net_income > 0 %}+{% endif %}${{ player.delta_true_net_income }}
-                </p>
-                <p style="margin: 15px 0 0 0; padding-top: 15px; border-top: 2px solid #ddd;">
-                    <strong>Prediction error:</strong>
-                    <span style="font-size: 1.3em; font-weight: bold;
-                        {% if stage1_error > 0 %}color: #ff6f00;{% elif stage1_error < 0 %}color: #d32f2f;{% else %}color: #2e7d32;{% endif %}">
-                        {% if stage1_error > 0 %}+{% endif %}${{ stage1_error }}
-                    </span>
-                </p>
-                <p style="font-size: 0.9em; color: #666; margin: 5px 0 0 0;">
-                    {% if stage1_error > 50 %}
-                        You significantly overestimated the benefit.
-                    {% elif stage1_error > 0 %}
-                        You overestimated the benefit.
-                    {% elif stage1_error < -50 %}
-                        You significantly underestimated the benefit.
-                    {% elif stage1_error < 0 %}
-                        You underestimated the benefit.
-                    {% else %}
-                        Your prediction was exactly correct!
-                    {% endif %}
-                </p>
-            </div>
-
-            <!-- Stage 2 Accuracy -->
-            <div style="background-color: white; padding: 20px; border-radius: 8px; border-left: 4px solid #1976d2;">
-                <h4 style="margin-top: 0; color: #1565c0;">
-                    Part 2
-                    ({% if treatment_format == "dashboard" %}Dashboard{% else %}AI Analysis{% endif %})
-                </h4>
-                <p style="margin: 10px 0;">
-                    <strong>You predicted:</strong>
-                    {% if player.stage2_perceived_delta > 0 %}+{% endif %}${{ player.stage2_perceived_delta }}
-                </p>
-                <p style="margin: 10px 0;">
-                    <strong>Actual change:</strong>
-                    {% if player.delta_true_net_income > 0 %}+{% endif %}${{ player.delta_true_net_income }}
-                </p>
-                <p style="margin: 15px 0 0 0; padding-top: 15px; border-top: 2px solid #ddd;">
-                    <strong>Prediction error:</strong>
-                    <span style="font-size: 1.3em; font-weight: bold;
-                        {% if stage2_error > 0 %}color: #ff6f00;{% elif stage2_error < 0 %}color: #d32f2f;{% else %}color: #2e7d32;{% endif %}">
-                        {% if stage2_error > 0 %}+{% endif %}${{ stage2_error }}
-                    </span>
-                </p>
-                <p style="font-size: 0.9em; color: #666; margin: 5px 0 0 0;">
-                    {% if stage2_error_abs < stage1_error_abs %}
-                        <strong style="color: #2e7d32;">✓ Your prediction improved!</strong>
-                    {% elif stage2_error_abs > stage1_error_abs %}
-                        Your prediction was less accurate.
-                    {% else %}
-                        Your prediction accuracy was similar.
-                    {% endif %}
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <div style="text-align: center; margin: 40px 0;">
-        <p style="font-size: 1.1em; color: #666;">
-            On the next page, we'll ask you some final questions about your decision.
+    <!-- Treatment Format Badge -->
+    {% if treatment_format == "dashboard" %}
+    <div style="background-color: #e8f5e9; padding: 20px; margin-bottom: 25px; border-left: 5px solid #4caf50; border-radius: 4px;">
+        <h3 style="margin-top: 0; color: #2e7d32;">📊 Visual Dashboard View</h3>
+        <p style="margin: 0; color: #2e7d32;">
+            Below is a visual comparison of your two options.
         </p>
+    </div>
+    {% else %}
+    <div style="background-color: #e3f2fd; padding: 20px; margin-bottom: 25px; border-left: 5px solid #2196f3; border-radius: 4px;">
+        <h3 style="margin-top: 0; color: #1565c0;">💬 AI-Assisted Analysis</h3>
+        <p style="margin: 0; color: #1565c0;">
+            Below is an interactive guide to help you understand the financial impact.
+        </p>
+    </div>
+    {% endif %}
+
+    <!-- Scenario Reminder -->
+    <div style="background-color: #fff9e6; padding: 20px; margin-bottom: 25px; border-left: 5px solid #ffc107; border-radius: 4px;">
+        <h3 style="margin-top: 0; color: #f57c00;">Job Offer Scenario</h3>
+        <p style="line-height: 1.6; margin-bottom: 12px;">
+            <strong>Your current job:</strong> {{ current_job_desc }}
+        </p>
+        <p style="line-height: 1.6; margin-bottom: 12px;">
+            <strong>Job offer:</strong> {{ offer_job_desc }}
+        </p>
+    </div>
+
+    <!-- TREATMENT CONTENT -->
+    {% if treatment_format == "dashboard" %}
+        <!-- DASHBOARD VIEW -->
+        <div style="background-color: white; padding: 30px; margin: 25px 0; border: 2px solid #4caf50; border-radius: 8px;">
+            <h3 style="margin-top: 0; color: #2e7d32; text-align: center;">📊 Financial Comparison Dashboard</h3>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 25px 0;">
+                <!-- Current Job Column -->
+                <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px;">
+                    <h4 style="margin-top: 0; color: #757575; text-align: center;">Current Job</h4>
+                    <div style="text-align: center; margin: 20px 0;">
+                        <div style="font-size: 2em; color: #2e7d32; font-weight: bold;">
+                            ${{ current_monthly_gross }}
+                        </div>
+                        <div style="font-size: 0.9em; color: #666;">Monthly Earnings</div>
+                    </div>
+                    <div style="text-align: center; margin: 20px 0;">
+                        <div style="font-size: 2em; color: #1976d2; font-weight: bold;">
+                            ${{ player.cur_benefits_total }}
+                        </div>
+                        <div style="font-size: 0.9em; color: #666;">Monthly Benefits</div>
+                    </div>
+                    <div style="text-align: center; margin: 20px 0; padding-top: 15px; border-top: 3px solid #333;">
+                        <div style="font-size: 2.5em; color: #000; font-weight: bold;">
+                            ${{ player.cur_true_net_income }}
+                        </div>
+                        <div style="font-size: 1em; color: #333; font-weight: bold;">TOTAL RESOURCES</div>
+                    </div>
+                </div>
+
+                <!-- New Job Column -->
+                <div style="background-color: #e3f2fd; padding: 20px; border-radius: 8px; border: 3px solid #1976d2;">
+                    <h4 style="margin-top: 0; color: #1565c0; text-align: center;">New Job Offer</h4>
+                    <div style="text-align: center; margin: 20px 0;">
+                        <div style="font-size: 2em; color: #2e7d32; font-weight: bold;">
+                            ${{ offer_monthly_gross }}
+                        </div>
+                        <div style="font-size: 0.9em; color: #666;">Monthly Earnings</div>
+                    </div>
+                    <div style="text-align: center; margin: 20px 0;">
+                        <div style="font-size: 2em; color: #1976d2; font-weight: bold;">
+                            ${{ player.off_benefits_total }}
+                        </div>
+                        <div style="font-size: 0.9em; color: #666;">Monthly Benefits</div>
+                    </div>
+                    <div style="text-align: center; margin: 20px 0; padding-top: 15px; border-top: 3px solid #1976d2;">
+                        <div style="font-size: 2.5em; color: #1565c0; font-weight: bold;">
+                            ${{ player.off_true_net_income }}
+                        </div>
+                        <div style="font-size: 1em; color: #1565c0; font-weight: bold;">TOTAL RESOURCES</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Change Indicator -->
+            <div style="text-align: center; margin: 30px 0; padding: 20px; background-color: #fff3e0; border-radius: 8px;">
+                <div style="font-size: 1.2em; color: #e65100; font-weight: bold; margin-bottom: 10px;">
+                    Net Change in Total Monthly Resources:
+                </div>
+                <div style="font-size: 3em; font-weight: bold;
+                    {% if player.delta_true_net_income > 0 %}color: #2e7d32;{% elif player.delta_true_net_income < 0 %}color: #c62828;{% else %}color: #666;{% endif %}">
+                    {% if player.delta_true_net_income > 0 %}+{% endif %}${{ player.delta_true_net_income }}
+                </div>
+            </div>
+        </div>
+
+    {% else %}
+        <!-- CHATGPT VIEW -->
+        <div style="background-color: white; padding: 30px; margin: 25px 0; border: 2px solid #2196f3; border-radius: 8px;">
+            <h3 style="margin-top: 0; color: #1565c0; text-align: center;">💬 AI Financial Analysis</h3>
+
+            <div style="background-color: #e3f2fd; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                <p style="margin: 0 0 15px 0; line-height: 1.6;">
+                    <strong>Let me help you understand the financial impact of this job offer.</strong>
+                </p>
+
+                <p style="margin: 15px 0; line-height: 1.6;">
+                    With your <strong>current job</strong>, you earn ${{ current_monthly_gross }}/month and receive ${{ player.cur_benefits_total }}/month in benefits,
+                    giving you <strong>total monthly resources of ${{ player.cur_true_net_income }}</strong>.
+                </p>
+
+                <p style="margin: 15px 0; line-height: 1.6;">
+                    With the <strong>new job offer</strong>, you would earn ${{ offer_monthly_gross }}/month. However, your benefits would change to ${{ player.off_benefits_total }}/month,
+                    giving you <strong>total monthly resources of ${{ player.off_true_net_income }}</strong>.
+                </p>
+
+                <div style="background-color: #fff3e0; padding: 15px; margin: 20px 0; border-left: 4px solid #ff9800; border-radius: 4px;">
+                    <p style="margin: 0; font-size: 1.1em; font-weight: bold; color: #e65100;">
+                        💡 Key Insight:
+                    </p>
+                    <p style="margin: 10px 0 0 0; font-size: 1.1em; color: #e65100;">
+                        {% if player.delta_true_net_income > 0 %}
+                            Accepting this offer would <strong>increase</strong> your total monthly resources by <strong>${{ player.delta_true_net_income }}</strong>.
+                        {% elif player.delta_true_net_income < 0 %}
+                            Accepting this offer would <strong>decrease</strong> your total monthly resources by <strong>${{ delta_abs }}</strong>.
+                        {% else %}
+                            Accepting this offer would result in <strong>about the same</strong> total monthly resources.
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- Decision Section -->
+    <div style="background-color: #fff3e0; padding: 25px; margin: 30px 0; border: 3px solid #ff9800; border-radius: 4px;">
+        <h3 style="margin-top: 0; color: #e65100;">
+            <span style="font-size: 1.3em;">📋</span> Your Decision (Part 2)
+        </h3>
+
+        <p style="font-size: 1.05em; line-height: 1.6; margin-bottom: 20px;">
+            Now that you've seen this additional information, <strong>which option would you choose?</strong>
+        </p>
+
+        <div style="margin-bottom: 25px;">
+            <label style="font-weight: bold; display: block; margin-bottom: 10px;">What would you do?</label>
+            {{ formfield 'stage2_decision' }}
+        </div>
+
+        <div id="perception-section" style="display: none; margin-top: 30px; padding-top: 25px; border-top: 2px solid #ffb74d;">
+            <h4 style="color: #e65100;">💭 What do you think the financial impact would be?</h4>
+
+            <label style="font-weight: bold; display: block; margin-bottom: 10px;">
+                What do you think the change in your monthly total resources would be?
+            </label>
+            <input type="number"
+                   name="stage2_perceived_delta"
+                   step="any"
+                   placeholder="e.g., 150 or -200"
+                   required
+                   style="width: 100%; padding: 12px; font-size: 1.1em; border: 2px solid #ddd; border-radius: 4px; box-sizing: border-box;">
+
+            <div style="background-color: #fff; padding: 15px; margin-top: 15px; border: 1px solid #ddd; border-radius: 3px;">
+                <p style="margin: 0; font-size: 0.95em; color: #555;">
+                    <strong>💡 Instructions:</strong> Enter positive for increase, negative for decrease, 0 for same.
+                </p>
+            </div>
+        </div>
     </div>
 
     {% next_button %}
 
 </div>
+
+<script>
+    const decisionRadios = document.querySelectorAll('input[name="stage2_decision"]');
+    const perceptionSection = document.getElementById('perception-section');
+
+    function updatePerceptionSection() {
+        const selected = document.querySelector('input[name="stage2_decision"]:checked');
+        if (selected) {
+            perceptionSection.style.display = 'block';
+        }
+    }
+
+    decisionRadios.forEach(radio => {
+        radio.addEventListener('change', updatePerceptionSection);
+    });
+
+    if (document.querySelector('input[name="stage2_decision"]:checked')) {
+        updatePerceptionSection();
+    }
+</script>
 
 {% endblock %}
