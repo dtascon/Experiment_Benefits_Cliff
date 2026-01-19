@@ -579,6 +579,8 @@ class Player(BasePlayer):
     stage1_perceived_delta = models.FloatField(blank=True)
     stage1_decision = models.IntegerField(
         choices=[[1, "Accept the offer"], [0, "Keep current job"]],
+        widget=widgets.RadioSelect,
+        label="What would you do?",
         blank=True
     )
 
@@ -586,6 +588,8 @@ class Player(BasePlayer):
     stage2_perceived_delta = models.FloatField(blank=True)
     stage2_decision = models.IntegerField(
         choices=[[1, "Accept the offer"], [0, "Keep current job"]],
+        widget=widgets.RadioSelect,
+        label="What would you do?",
         blank=True
     )
 
