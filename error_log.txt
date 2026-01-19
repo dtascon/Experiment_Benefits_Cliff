@@ -1,0 +1,200 @@
+2026-01-19T03:28:26.175797+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175798+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/starlette/applications.py", line 112, in __call__
+2026-01-19T03:28:26.175799+00:00 app[web.1]: await self.middleware_stack(scope, receive, send)
+2026-01-19T03:28:26.175799+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/starlette/middleware/base.py", line 26, in __call__
+2026-01-19T03:28:26.175799+00:00 app[web.1]: await response(scope, receive, send)
+2026-01-19T03:28:26.175800+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/starlette/responses.py", line 224, in __call__
+2026-01-19T03:28:26.175800+00:00 app[web.1]: await run_until_first_complete(
+2026-01-19T03:28:26.175800+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/starlette/concurrency.py", line 24, in run_until_first_complete
+2026-01-19T03:28:26.175800+00:00 app[web.1]: [task.result() for task in done]
+2026-01-19T03:28:26.175807+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/starlette/concurrency.py", line 24, in <listcomp>
+2026-01-19T03:28:26.175807+00:00 app[web.1]: [task.result() for task in done]
+2026-01-19T03:28:26.175807+00:00 app[web.1]: ^^^^^^^^^^^^^
+2026-01-19T03:28:26.175808+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/starlette/responses.py", line 216, in stream_response
+2026-01-19T03:28:26.175808+00:00 app[web.1]: async for chunk in self.body_iterator:
+2026-01-19T03:28:26.175808+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/starlette/middleware/base.py", line 56, in body_stream
+2026-01-19T03:28:26.175809+00:00 app[web.1]: task.result()
+2026-01-19T03:28:26.175809+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/starlette/middleware/base.py", line 38, in coro
+2026-01-19T03:28:26.175809+00:00 app[web.1]: await self.app(scope, receive, send)
+2026-01-19T03:28:26.175809+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/errorpage.py", line 247, in __call__
+2026-01-19T03:28:26.175810+00:00 app[web.1]: raise exc  # from None
+2026-01-19T03:28:26.175810+00:00 app[web.1]: ^^^^^^^^^
+2026-01-19T03:28:26.175811+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/errorpage.py", line 227, in __call__
+2026-01-19T03:28:26.175822+00:00 app[web.1]: await self.app(scope, receive, _send)
+2026-01-19T03:28:26.175823+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/starlette/middleware/base.py", line 25, in __call__
+2026-01-19T03:28:26.175823+00:00 app[web.1]: response = await self.dispatch_func(request, self.call_next)
+2026-01-19T03:28:26.175823+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175824+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/middleware.py", line 56, in dispatch
+2026-01-19T03:28:26.175824+00:00 app[web.1]: response = await call_next(request)
+2026-01-19T03:28:26.175824+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175824+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/starlette/middleware/base.py", line 45, in call_next
+2026-01-19T03:28:26.175825+00:00 app[web.1]: task.result()
+2026-01-19T03:28:26.175825+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/starlette/middleware/base.py", line 38, in coro
+2026-01-19T03:28:26.175825+00:00 app[web.1]: await self.app(scope, receive, send)
+2026-01-19T03:28:26.175826+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/starlette/middleware/sessions.py", line 75, in __call__
+2026-01-19T03:28:26.175826+00:00 app[web.1]: await self.app(scope, receive, send_wrapper)
+2026-01-19T03:28:26.175826+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/patch.py", line 41, in __call__
+2026-01-19T03:28:26.175827+00:00 app[web.1]: raise exc  # from None
+2026-01-19T03:28:26.175827+00:00 app[web.1]: ^^^^^^^^^
+2026-01-19T03:28:26.175827+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/patch.py", line 29, in __call__
+2026-01-19T03:28:26.175827+00:00 app[web.1]: await self.app(scope, receive, sender)
+2026-01-19T03:28:26.175828+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/starlette/routing.py", line 582, in __call__
+2026-01-19T03:28:26.175828+00:00 app[web.1]: await route.handle(scope, receive, send)
+2026-01-19T03:28:26.175828+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/starlette/routing.py", line 243, in handle
+2026-01-19T03:28:26.175828+00:00 app[web.1]: await self.app(scope, receive, send)
+2026-01-19T03:28:26.175828+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/views/abstract.py", line 122, in dispatch
+2026-01-19T03:28:26.175828+00:00 app[web.1]: response = await run_in_threadpool(self.inner_dispatch, request)
+2026-01-19T03:28:26.175829+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175829+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/starlette/concurrency.py", line 40, in run_in_threadpool
+2026-01-19T03:28:26.175830+00:00 app[web.1]: return await loop.run_in_executor(None, func, *args)
+2026-01-19T03:28:26.175830+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175830+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/concurrent/futures/thread.py", line 58, in run
+2026-01-19T03:28:26.175830+00:00 app[web.1]: result = self.fn(*self.args, **self.kwargs)
+2026-01-19T03:28:26.175831+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175835+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/views/abstract.py", line 481, in inner_dispatch
+2026-01-19T03:28:26.175836+00:00 app[web.1]: return self.get()
+2026-01-19T03:28:26.175836+00:00 app[web.1]: ^^^^^^^^^^
+2026-01-19T03:28:26.175836+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/views/abstract.py", line 542, in get
+2026-01-19T03:28:26.175836+00:00 app[web.1]: response = self.render_page(context)
+2026-01-19T03:28:26.175837+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175837+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/views/abstract.py", line 235, in render_page
+2026-01-19T03:28:26.175837+00:00 app[web.1]: return render(
+2026-01-19T03:28:26.175837+00:00 app[web.1]: ^^^^^^^
+2026-01-19T03:28:26.175838+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/templating/loader.py", line 86, in render
+2026-01-19T03:28:26.175838+00:00 app[web.1]: ibis_loader.load(template_name, template_type=template_type).render(
+2026-01-19T03:28:26.175838+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/templating/template.py", line 36, in render
+2026-01-19T03:28:26.175838+00:00 app[web.1]: return self.root_node.render(context.Context(data_dict, self))
+2026-01-19T03:28:26.175839+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175839+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/templating/nodes.py", line 193, in render
+2026-01-19T03:28:26.175839+00:00 app[web.1]: return self.wrender(context)
+2026-01-19T03:28:26.175839+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175840+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/templating/nodes.py", line 210, in wrender
+2026-01-19T03:28:26.175840+00:00 app[web.1]: return ''.join(child.render(context) for child in self.children)
+2026-01-19T03:28:26.175840+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175840+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/templating/nodes.py", line 210, in <genexpr>
+2026-01-19T03:28:26.175840+00:00 app[web.1]: return ''.join(child.render(context) for child in self.children)
+2026-01-19T03:28:26.175841+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175841+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/templating/nodes.py", line 193, in render
+2026-01-19T03:28:26.175841+00:00 app[web.1]: return self.wrender(context)
+2026-01-19T03:28:26.175842+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175842+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/templating/nodes.py", line 210, in wrender
+2026-01-19T03:28:26.175842+00:00 app[web.1]: return ''.join(child.render(context) for child in self.children)
+2026-01-19T03:28:26.175843+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175843+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/templating/nodes.py", line 210, in <genexpr>
+2026-01-19T03:28:26.175843+00:00 app[web.1]: return ''.join(child.render(context) for child in self.children)
+2026-01-19T03:28:26.175843+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175844+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/templating/nodes.py", line 193, in render
+2026-01-19T03:28:26.175844+00:00 app[web.1]: return self.wrender(context)
+2026-01-19T03:28:26.175844+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175844+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/templating/nodes.py", line 210, in wrender
+2026-01-19T03:28:26.175844+00:00 app[web.1]: return ''.join(child.render(context) for child in self.children)
+2026-01-19T03:28:26.175845+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175845+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/templating/nodes.py", line 210, in <genexpr>
+2026-01-19T03:28:26.175845+00:00 app[web.1]: return ''.join(child.render(context) for child in self.children)
+2026-01-19T03:28:26.175845+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175845+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/templating/nodes.py", line 193, in render
+2026-01-19T03:28:26.175846+00:00 app[web.1]: return self.wrender(context)
+2026-01-19T03:28:26.175846+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175846+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/templating/nodes.py", line 210, in wrender
+2026-01-19T03:28:26.175846+00:00 app[web.1]: return ''.join(child.render(context) for child in self.children)
+2026-01-19T03:28:26.175846+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175846+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/templating/nodes.py", line 210, in <genexpr>
+2026-01-19T03:28:26.175847+00:00 app[web.1]: return ''.join(child.render(context) for child in self.children)
+2026-01-19T03:28:26.175847+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175847+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/templating/nodes.py", line 193, in render
+2026-01-19T03:28:26.175847+00:00 app[web.1]: return self.wrender(context)
+2026-01-19T03:28:26.175847+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175848+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/templating/nodes.py", line 210, in wrender
+2026-01-19T03:28:26.175848+00:00 app[web.1]: return ''.join(child.render(context) for child in self.children)
+2026-01-19T03:28:26.175848+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175848+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/templating/nodes.py", line 210, in <genexpr>
+2026-01-19T03:28:26.175848+00:00 app[web.1]: return ''.join(child.render(context) for child in self.children)
+2026-01-19T03:28:26.175848+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175851+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/templating/nodes.py", line 193, in render
+2026-01-19T03:28:26.175851+00:00 app[web.1]: return self.wrender(context)
+2026-01-19T03:28:26.175852+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175852+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/templating/nodes.py", line 210, in wrender
+2026-01-19T03:28:26.175852+00:00 app[web.1]: return ''.join(child.render(context) for child in self.children)
+2026-01-19T03:28:26.175852+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175852+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/templating/nodes.py", line 210, in <genexpr>
+2026-01-19T03:28:26.175853+00:00 app[web.1]: return ''.join(child.render(context) for child in self.children)
+2026-01-19T03:28:26.175853+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175853+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/templating/nodes.py", line 193, in render
+2026-01-19T03:28:26.175853+00:00 app[web.1]: return self.wrender(context)
+2026-01-19T03:28:26.175853+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175861+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/templating/nodes.py", line 210, in wrender
+2026-01-19T03:28:26.175861+00:00 app[web.1]: return ''.join(child.render(context) for child in self.children)
+2026-01-19T03:28:26.175861+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175861+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/templating/nodes.py", line 210, in <genexpr>
+2026-01-19T03:28:26.175861+00:00 app[web.1]: return ''.join(child.render(context) for child in self.children)
+2026-01-19T03:28:26.175861+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175862+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/templating/nodes.py", line 193, in render
+2026-01-19T03:28:26.175862+00:00 app[web.1]: return self.wrender(context)
+2026-01-19T03:28:26.175862+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175862+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/templating/nodes.py", line 599, in wrender
+2026-01-19T03:28:26.175862+00:00 app[web.1]: return self.render_block(context, block_list[:])
+2026-01-19T03:28:26.175863+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175863+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/templating/nodes.py", line 612, in render_block
+2026-01-19T03:28:26.175863+00:00 app[web.1]: output = ''.join(child.render(context) for child in last_block.children)
+2026-01-19T03:28:26.175863+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175863+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/templating/nodes.py", line 612, in <genexpr>
+2026-01-19T03:28:26.175864+00:00 app[web.1]: output = ''.join(child.render(context) for child in last_block.children)
+2026-01-19T03:28:26.175864+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175864+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/templating/nodes.py", line 193, in render
+2026-01-19T03:28:26.175864+00:00 app[web.1]: return self.wrender(context)
+2026-01-19T03:28:26.175864+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175865+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/templating/nodes.py", line 599, in wrender
+2026-01-19T03:28:26.175865+00:00 app[web.1]: return self.render_block(context, block_list[:])
+2026-01-19T03:28:26.175865+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175865+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/templating/nodes.py", line 612, in render_block
+2026-01-19T03:28:26.175865+00:00 app[web.1]: output = ''.join(child.render(context) for child in last_block.children)
+2026-01-19T03:28:26.175866+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175866+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/templating/nodes.py", line 612, in <genexpr>
+2026-01-19T03:28:26.175866+00:00 app[web.1]: output = ''.join(child.render(context) for child in last_block.children)
+2026-01-19T03:28:26.175866+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175866+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/templating/nodes.py", line 193, in render
+2026-01-19T03:28:26.175867+00:00 app[web.1]: return self.wrender(context)
+2026-01-19T03:28:26.175867+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175867+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/templating/nodes.py", line 270, in wrender
+2026-01-19T03:28:26.175867+00:00 app[web.1]: content = expr.eval(context)
+2026-01-19T03:28:26.175867+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175868+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/templating/nodes.py", line 135, in eval
+2026-01-19T03:28:26.175868+00:00 app[web.1]: return self._resolve_variable(context)
+2026-01-19T03:28:26.175868+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175868+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/templating/nodes.py", line 138, in _resolve_variable
+2026-01-19T03:28:26.175869+00:00 app[web.1]: obj = context.resolve(self.varstring, self.token)
+2026-01-19T03:28:26.175870+00:00 app[web.1]: ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-01-19T03:28:26.175870+00:00 app[web.1]: File "/app/.heroku/python/lib/python3.11/site-packages/otree/templating/context.py", line 84, in resolve
+2026-01-19T03:28:26.175870+00:00 app[web.1]: raise errors.UndefinedVariable(msg, token) from None
+2026-01-19T03:28:26.175871+00:00 app[web.1]: otree.templating.errors.UndefinedVariable: Cannot resolve the variable 'current_job_desc' (line 54, in "current_job_desc")
+2026-01-19T03:28:26.200849+00:00 heroku[router]: at=info method=GET path="/auto_advance?participant_code=1p861wry&page_index=3" host=pitt-benefit-cliff-2026-397e053adf3c.herokuapp.com request_id=483f21ca-cfd4-5cbf-7ddb-08aef098d7c6 fwd="71.195.90.143" dyno=web.1 connect=0ms service=3123ms status=101 bytes=0 protocol=http1.1 tls=true tls_version=unknown
+2026-01-19T03:29:25.643231+00:00 app[web.1]: own_time=0ms request_id=02a5706c-5aa8-f24f-72cc-118644b52904
+2026-01-19T03:29:25.643455+00:00 app[web.1]: INFO:     71.195.90.143:0 - "GET / HTTP/1.1" 307 Temporary Redirect
+2026-01-19T03:29:25.643864+00:00 heroku[router]: at=info method=GET path="/" host=pitt-benefit-cliff-2026-397e053adf3c.herokuapp.com request_id=02a5706c-5aa8-f24f-72cc-118644b52904 fwd="71.195.90.143" dyno=web.1 connect=0ms service=1ms status=307 bytes=0 protocol=http1.1 tls=true tls_version=unknown
+2026-01-19T03:29:25.682895+00:00 app[web.1]: own_time=1ms request_id=655009c0-fae6-67e9-3743-eb4e29eb6549
+2026-01-19T03:29:25.683125+00:00 app[web.1]: INFO:     71.195.90.143:0 - "GET /demo HTTP/1.1" 200 OK
+2026-01-19T03:29:25.683415+00:00 heroku[router]: at=info method=GET path="/demo" host=pitt-benefit-cliff-2026-397e053adf3c.herokuapp.com request_id=655009c0-fae6-67e9-3743-eb4e29eb6549 fwd="71.195.90.143" dyno=web.1 connect=0ms service=3ms status=200 bytes=2773 protocol=http1.1 tls=true tls_version=unknown
+2026-01-19T03:29:27.079518+00:00 app[web.1]: own_time=1ms request_id=eb4e41b1-7f4b-7630-97c6-2bc4b8f2396c
+2026-01-19T03:29:27.079765+00:00 app[web.1]: INFO:     71.195.90.143:0 - "GET /demo/benefit_cliff_enhanced HTTP/1.1" 200 OK
+2026-01-19T03:29:27.080117+00:00 heroku[router]: at=info method=GET path="/demo/benefit_cliff_enhanced" host=pitt-benefit-cliff-2026-397e053adf3c.herokuapp.com request_id=eb4e41b1-7f4b-7630-97c6-2bc4b8f2396c fwd="71.195.90.143" dyno=web.1 connect=0ms service=2ms status=200 bytes=4019 protocol=http1.1 tls=true tls_version=unknown
+2026-01-19T03:29:27.606560+00:00 app[web.1]: own_time=48ms request_id=d96251e0-87d4-100c-3dea-eeb0fab62273
+2026-01-19T03:29:27.607820+00:00 app[web.1]: INFO:     71.195.90.143:0 - "GET /SessionStartLinks/2zov5dav HTTP/1.1" 200 OK
+2026-01-19T03:29:27.608137+00:00 heroku[router]: at=info method=GET path="/SessionStartLinks/2zov5dav" host=pitt-benefit-cliff-2026-397e053adf3c.herokuapp.com request_id=d96251e0-87d4-100c-3dea-eeb0fab62273 fwd="71.195.90.143" dyno=web.1 connect=0ms service=51ms status=200 bytes=8349 protocol=http1.1 tls=true tls_version=unknown
+2026-01-19T03:29:27.722044+00:00 heroku[router]: at=info method=GET path="/create_demo_session" host=pitt-benefit-cliff-2026-397e053adf3c.herokuapp.com request_id=259b68cd-29a6-61e9-bfd4-5982d3336a7e fwd="71.195.90.143" dyno=web.1 connect=0ms service=516ms status=101 bytes=0 protocol=http1.1 tls=true tls_version=unknown
+2026-01-19T03:29:29.014411+00:00 app[web.1]: own_time=13ms request_id=075ffab8-346d-0586-4467-edeb9732ef6b
+2026-01-19T03:29:29.016682+00:00 app[web.1]: INFO:     71.195.90.143:0 - "GET /InitializeParticipant/rpb7ugys HTTP/1.1" 307 Temporary Redirect
+2026-01-19T03:29:29.017062+00:00 heroku[router]: at=info method=GET path="/InitializeParticipant/rpb7ugys" host=pitt-benefit-cliff-2026-397e053adf3c.herokuapp.com request_id=075ffab8-346d-0586-4467-edeb9732ef6b fwd="71.195.90.143" dyno=web.1 connect=0ms service=16ms status=307 bytes=0 protocol=http1.1 tls=true tls_version=unknown
+2026-01-19T03:29:29.070639+00:00 app[web.1]: own_time=24ms request_id=4e0af097-4661-266b-4521-266c8f858d3e
+2026-01-19T03:29:29.075704+00:00 app[web.1]: INFO:     71.195.90.143:0 - "GET /p/rpb7ugys/benefit_cliff/WelcomeFromQualtrics/1 HTTP/1.1" 200 OK
+2026-01-19T03:29:29.076159+00:00 heroku[router]: at=info method=GET path="/p/rpb7ugys/benefit_cliff/WelcomeFromQualtrics/1" host=pitt-benefit-cliff-2026-397e053adf3c.herokuapp.com request_id=4e0af097-4661-266b-4521-266c8f858d3e fwd="71.195.90.143" dyno=web.1 connect=0ms service=31ms status=200 bytes=4584 protocol=http1.1 tls=true tls_version=unknown
+2026-01-19T03:29:30.769545+00:00 app[web.1]: own_time=27ms request_id=5373179e-57d3-3294-65a2-9e77f0884f2a
+2026-01-19T03:29:30.793444+00:00 app[web.1]: INFO:     71.195.90.143:0 - "POST /p/rpb7ugys/benefit_cliff/WelcomeFromQualtrics/1 HTTP/1.1" 302 Found
+2026-01-19T03:29:30.793892+00:00 heroku[router]: at=info method=POST path="/p/rpb7ugys/benefit_cliff/WelcomeFromQualtrics/1" host=pitt-benefit-cliff-2026-397e053adf3c.herokuapp.com request_id=5373179e-57d3-3294-65a2-9e77f0884f2a fwd="71.195.90.143" dyno=web.1 connect=0ms service=52ms status=302 bytes=0 protocol=http1.1 tls=true tls_version=unknown
+2026-01-19T03:29:30.849499+00:00 app[web.1]: own_time=26ms request_id=3702e435-48fa-fcc5-6dbe-1581be34a4b6
+2026-01-19T03:29:30.860737+00:00 app[web.1]: INFO:     71.195.90.143:0 - "GET /p/rpb7ugys/benefit_cliff/Stage1TextPage/2 HTTP/1.1" 200 OK
+2026-01-19T03:29:30.861163+00:00 heroku[router]: at=info method=GET path="/p/rpb7ugys/benefit_cliff/Stage1TextPage/2" host=pitt-benefit-cliff-2026-397e053adf3c.herokuapp.com request_id=3702e435-48fa-fcc5-6dbe-1581be34a4b6 fwd="71.195.90.143" dyno=web.1 connect=0ms service=38ms status=200 bytes=15098 protocol=http1.1 tls=true tls_version=unknown
+2026-01-19T03:29:30.957992+00:00 heroku[router]: at=info method=GET path="/auto_advance?participant_code=rpb7ugys&page_index=1" host=pitt-benefit-cliff-2026-397e053adf3c.herokuapp.com request_id=1bd30150-7155-a329-d27d-cea515a04ed0 fwd="71.195.90.143" dyno=web.1 connect=0ms service=1615ms status=101 bytes=0 protocol=http1.1 tls=true tls_version=unknown
+2026-01-19T03:29:37.882860+00:00 app[web.1]: own_time=28ms request_id=0e4fbe49-35ba-af66-e9e4-b370a16295bc
+2026-01-19T03:29:37.885390+00:00 app[web.1]: INFO:     71.195.90.143:0 - "POST /p/rpb7ugys/benefit_cliff/Stage1TextPage/2 HTTP/1.1" 200 OK
+2026-01-19T03:29:37.885891+00:00 heroku[router]: at=info method=POST path="/p/rpb7ugys/benefit_cliff/Stage1TextPage/2" host=pitt-benefit-cliff-2026-397e053adf3c.herokuapp.com request_id=0e4fbe49-35ba-af66-e9e4-b370a16295bc fwd="71.195.90.143" dyno=web.1 connect=0ms service=32ms status=200 bytes=15266 protocol=http1.1 tls=true tls_version=unknown
+2026-01-19T03:29:37.915417+00:00 heroku[router]: at=info method=GET path="/auto_advance?participant_code=rpb7ugys&page_index=2" host=pitt-benefit-cliff-2026-397e053adf3c.herokuapp.com request_id=7308ee62-3cb2-1927-f63e-15bcebad127b fwd="71.195.90.143" dyno=web.1 connect=0ms service=6892ms status=101 bytes=0 protocol=http1.1 tls=true tls_version=unknown
