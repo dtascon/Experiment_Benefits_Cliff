@@ -6,7 +6,7 @@ from pathlib import Path
 
 doc = """
 Enhanced PRD / Benefit Cliff Experiment - 20 Strategic Vignettes
-3 Geometries × 3 Opportunity Levels × 2 Repetitions + 2 Attention Checks = 20 vignettes
+4-Stage Structure: Stage 1 (Text) → Stage 2 (Dashboard/ChatGPT) → Feedback → Reconsideration
 """
 
 # ----------------------------
@@ -14,16 +14,14 @@ Enhanced PRD / Benefit Cliff Experiment - 20 Strategic Vignettes
 # ----------------------------
 
 SEED = 123
-N_VIGNETTES = 20  # Changed from 60 to 20
+N_VIGNETTES = 20
 
 WEEKS_PER_MONTH = 52 / 12
 PAYROLL_TAX_RATE = 0.0765
 INCOME_TAX_RATE = 0.10
 
 
-# ----------------------------
-# Location and Family-Specific Benefit Rules
-# ----------------------------
+# [ALL THE LocationBenefits CLASS AND HELPER FUNCTIONS]
 
 class LocationBenefits:
     """Location and family-specific benefit rules based on PRD Dashboard"""
@@ -226,19 +224,13 @@ def vignette_csv_path() -> Path:
 
 
 def generate_vignettes_csv(n: int, seed: int) -> None:
-    """
-    Generate 20 vignettes:
-    - 3 geometries (CLIFF, PLATEAU, POSITIVE) × 3 opportunities (LOW, MED, HIGH) = 9 types
-    - Each type repeated 2 times = 18 vignettes
-    - 2 attention checks = 20 total
-    """
+    """Generate 20 vignettes: 3 geometries × 3 opportunities × 2 reps + 2 attention checks"""
     rng = random.Random(seed)
 
     locations = [
         ("PA", "Allegheny"), ("GA", "Fulton"), ("TX", "Harris")
     ]
 
-    # Simplified family types for 20 vignettes
     family_types = [
         {"num_children": 2, "child_ages": [3, 6], "has_disability": False, "adult_age": 32, "is_married": False,
          "spouse_age": None, "other_adults": 0, "desc": "Single parent (age 32), 2 children (ages 3, 6)"},
@@ -251,7 +243,6 @@ def generate_vignettes_csv(n: int, seed: int) -> None:
          "spouse_age": None, "other_adults": 0, "desc": "Single adult (age 28), no children"},
     ]
 
-    # Opportunity level descriptions
     opportunity_descriptions = {
         "low": {
             "current_job": "Retail cashier at local store",
@@ -270,7 +261,6 @@ def generate_vignettes_csv(n: int, seed: int) -> None:
         }
     }
 
-    # Define scenarios for each geometry type
     cliff_scenarios = [
         {"current_wage": 11, "offer_wage": 14, "hours": 30},
         {"current_wage": 12, "offer_wage": 15, "hours": 28},
@@ -289,7 +279,7 @@ def generate_vignettes_csv(n: int, seed: int) -> None:
     rows = []
     vignette_counter = 1
 
-    # Generate 2 attention checks first
+    # Generate 2 attention checks
     for i in range(2):
         family = rng.choice(family_types)
         state, county = rng.choice(locations)
@@ -301,7 +291,6 @@ def generate_vignettes_csv(n: int, seed: int) -> None:
             has_disability=family["has_disability"]
         )
 
-        # Attention check: obvious choice (much higher wage, no cliff)
         current_wage = 10.0
         offer_wage = 18.0
         hours = 25
@@ -361,14 +350,14 @@ def generate_vignettes_csv(n: int, seed: int) -> None:
         rows.append(row)
         vignette_counter += 1
 
-    # Generate 18 main vignettes (3 geometries × 3 opportunities × 2 repetitions)
+    # Generate 18 main vignettes
     for geometry, scenarios, target_label in [
         ("CLIFF", cliff_scenarios, "cliff"),
         ("PLATEAU", plateau_scenarios, "plateau"),
         ("POSITIVE", positive_scenarios, "positive")
     ]:
         for opp_level in ["low", "medium", "high"]:
-            for rep in range(2):  # 2 repetitions
+            for rep in range(2):
                 scenario = scenarios[rep % len(scenarios)]
                 family = rng.choice(family_types)
                 state, county = rng.choice(locations)
@@ -459,14 +448,10 @@ def generate_vignettes_csv(n: int, seed: int) -> None:
                 rows.append(row)
                 vignette_counter += 1
 
-    # Shuffle all vignettes
     rng.shuffle(rows)
-
-    # Reassign IDs after shuffle
     for i, row in enumerate(rows):
         row["vignette_id"] = i + 1
 
-    # Write to CSV
     path = vignette_csv_path()
     with path.open("w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
@@ -504,7 +489,10 @@ def load_vignettes() -> list[dict]:
     return out
 
 
-# oTree models
+# ============================================
+# oTree Models
+# ============================================
+
 class C(BaseConstants):
     NAME_IN_URL = "benefit_cliff"
     PLAYERS_PER_GROUP = None
@@ -524,9 +512,9 @@ class Player(BasePlayer):
     vignette_id = models.IntegerField()
     scenario_type = models.StringField()
     target_type = models.StringField()
-    opportunity_level = models.StringField()  # NEW: low/medium/high
+    opportunity_level = models.StringField()
 
-    # Job descriptions - NEW
+    # Job descriptions
     current_job_desc = models.LongStringField()
     offer_job_desc = models.LongStringField()
     mobility_description = models.LongStringField()
@@ -550,7 +538,7 @@ class Player(BasePlayer):
     offer_hourly_wage = models.FloatField()
     offer_hours = models.IntegerField()
 
-    # Current situation benefits
+    # Current benefits
     cur_snap = models.FloatField()
     cur_medicaid = models.FloatField()
     cur_ccdf = models.FloatField()
@@ -563,7 +551,7 @@ class Player(BasePlayer):
     cur_benefits_total = models.FloatField()
     cur_true_net_income = models.FloatField()
 
-    # Offer situation benefits
+    # Offer benefits
     off_snap = models.FloatField()
     off_medicaid = models.FloatField()
     off_ccdf = models.FloatField()
@@ -584,57 +572,46 @@ class Player(BasePlayer):
     programs_lost = models.IntegerField()
     programs_reduced = models.IntegerField()
 
-    # EXISTING DECISIONS
-    accept_offer = models.IntegerField(
+    # Treatment assignment
+    treatment_format = models.StringField()
+
+    # STAGE 1: Text baseline responses
+    stage1_perceived_delta = models.FloatField(blank=True)
+    stage1_decision = models.IntegerField(
         choices=[[1, "Accept the offer"], [0, "Keep current job"]],
-        widget=widgets.RadioSelect,
-        label="What would you do?"
-    )
-
-    perceived_delta_true_net_income = models.FloatField(
-        label="What do you think the change in your monthly total resources would be?",
-        blank=False,
-        min=-10000,
-        max=10000,
-    )
-
-    # NEW QUESTIONS - Q3: Reasoning (multiple checkboxes - we'll store as string)
-    reason_more_money = models.BooleanField(
-        label="I would have more money immediately",
-        blank=True
-    )
-    reason_same_money = models.BooleanField(
-        label="I would have about the same money immediately",
-        blank=True
-    )
-    reason_future_opportunities = models.BooleanField(
-        label="I would have less money immediately, but better opportunities for the future",
-        blank=True
-    )
-    reason_salary_important = models.BooleanField(
-        label="A higher salary is important to me even if I don't net more after benefits",
-        blank=True
-    )
-    reason_reduce_benefits = models.BooleanField(
-        label="I want to reduce my reliance on government benefits",
-        blank=True
-    )
-    reason_job_title = models.BooleanField(
-        label="The job title or work environment is important to me",
-        blank=True
-    )
-    reason_not_sure = models.BooleanField(
-        label="I'm not sure about the financial impact",
-        blank=True
-    )
-    reason_other_text = models.LongStringField(
-        label="Other reason (please specify)",
         blank=True
     )
 
-    # NEW QUESTION - Q4: Future expectations
+    # STAGE 2: Treatment responses
+    stage2_perceived_delta = models.FloatField(blank=True)
+    stage2_decision = models.IntegerField(
+        choices=[[1, "Accept the offer"], [0, "Keep current job"]],
+        blank=True
+    )
+
+    # STAGE 3: Reconsideration responses
+    final_decision = models.IntegerField(
+        choices=[[1, "Accept the offer"], [0, "Keep current job"]],
+        blank=True
+    )
+
+    changed_mind = models.BooleanField(
+        label="Would you like to change your previous decision?",
+        blank=True
+    )
+
+    # Q3: Reasoning
+    reason_more_money = models.BooleanField(blank=True)
+    reason_same_money = models.BooleanField(blank=True)
+    reason_future_opportunities = models.BooleanField(blank=True)
+    reason_salary_important = models.BooleanField(blank=True)
+    reason_reduce_benefits = models.BooleanField(blank=True)
+    reason_job_title = models.BooleanField(blank=True)
+    reason_not_sure = models.BooleanField(blank=True)
+    reason_other_text = models.LongStringField(blank=True)
+
+    # Q4: Future expectations
     future_expectation = models.IntegerField(
-        label="Compared to your current job, how do you think accepting this offer would affect your total income (salary + benefits) in 3 years?",
         choices=[
             [1, "Much worse (>$5,000/year less)"],
             [2, "Somewhat worse ($1,000-$5,000/year less)"],
@@ -642,13 +619,11 @@ class Player(BasePlayer):
             [4, "Somewhat better ($1,000-$5,000/year more)"],
             [5, "Much better (>$5,000/year more)"],
         ],
-        widget=widgets.RadioSelect,
         blank=True
     )
 
-    # NEW QUESTION - Q5: Willingness to sacrifice (conditional on understanding loss)
+    # Q5: Willingness to sacrifice
     max_acceptable_loss = models.IntegerField(
-        label="Given the opportunities this job offers, what is the MAXIMUM monthly income loss you would be willing to accept?",
         choices=[
             [0, "$0 (I would not accept any loss)"],
             [50, "Up to $50/month"],
@@ -657,7 +632,6 @@ class Player(BasePlayer):
             [200, "Up to $200/month"],
             [999, "More than $200/month"],
         ],
-        widget=widgets.RadioSelect,
         blank=True
     )
 
@@ -735,14 +709,14 @@ def creating_session(subsession: Subsession):
         p.programs_lost = v["programs_lost"]
         p.programs_reduced = v["programs_reduced"]
 
+        p.treatment_format = rng.choice(["dashboard", "chatgpt"])
+
 
 # ============================================
 # PAGES
 # ============================================
 
 class WelcomeFromQualtrics(Page):
-    """First page after participants arrive from Qualtrics"""
-
     @staticmethod
     def is_displayed(player):
         return player.round_number == 1
@@ -761,17 +735,99 @@ class WelcomeFromQualtrics(Page):
         completion_code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
         participant.completion_code = completion_code
 
-        print(f"=== Participant from Qualtrics ===")
-        print(f"Prolific PID: {prolific_pid}")
-        print(f"Qualtrics Response ID: {qualtrics_id}")
-        print(f"Generated Completion Code: {completion_code}")
+
+# STAGE 1: Text baseline
+class Stage1TextPage(Page):
+    form_model = "player"
+    form_fields = ["stage1_perceived_delta", "stage1_decision"]
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        cur_gross = player.current_hourly_wage * player.current_hours * WEEKS_PER_MONTH
+        off_gross = player.offer_hourly_wage * player.offer_hours * WEEKS_PER_MONTH
+
+        return dict(
+            current_wage=player.current_hourly_wage,
+            current_hours=player.current_hours,
+            current_monthly_gross=round(cur_gross, 2),
+            current_annual_gross=round(cur_gross * 12, 2),
+            offer_monthly_gross=round(off_gross, 2),
+            offer_annual_gross=round(off_gross * 12, 2),
+            show_benefits=True,
+            show_ccdf=player.num_children > 0,
+            show_tanf=player.num_children > 0,
+            show_wic=player.num_children > 0,
+            show_head_start=player.num_children > 0,
+            show_disability=player.has_disability == 1,
+            opportunity_level=player.opportunity_level,
+            current_job_desc=player.current_job_desc,
+            offer_job_desc=player.offer_job_desc,
+            mobility_desc=player.mobility_description,
+        )
 
 
-class MyPage(Page):
+# STAGE 2: Treatment (Dashboard or ChatGPT)
+class Stage2TreatmentPage(Page):
+    form_model = "player"
+    form_fields = ["stage2_perceived_delta", "stage2_decision"]
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        cur_gross = player.current_hourly_wage * player.current_hours * WEEKS_PER_MONTH
+        off_gross = player.offer_hourly_wage * player.offer_hours * WEEKS_PER_MONTH
+
+        return dict(
+            current_wage=player.current_hourly_wage,
+            current_hours=player.current_hours,
+            current_monthly_gross=round(cur_gross, 2),
+            current_annual_gross=round(cur_gross * 12, 2),
+            offer_monthly_gross=round(off_gross, 2),
+            offer_annual_gross=round(off_gross * 12, 2),
+            show_benefits=True,
+            show_ccdf=player.num_children > 0,
+            show_tanf=player.num_children > 0,
+            show_wic=player.num_children > 0,
+            show_head_start=player.num_children > 0,
+            show_disability=player.has_disability == 1,
+            opportunity_level=player.opportunity_level,
+            current_job_desc=player.current_job_desc,
+            offer_job_desc=player.offer_job_desc,
+            mobility_desc=player.mobility_description,
+            treatment_format=player.treatment_format,
+        )
+
+
+# Feedback page (show reality)
+class FeedbackPage(Page):
+    @staticmethod
+    def vars_for_template(player: Player):
+        stage1_error = None
+        stage2_error = None
+
+        if player.stage1_perceived_delta is not None:
+            stage1_error = round(player.stage1_perceived_delta - player.delta_true_net_income, 2)
+
+        if player.stage2_perceived_delta is not None:
+            stage2_error = round(player.stage2_perceived_delta - player.delta_true_net_income, 2)
+
+        return dict(
+            show_ccdf=player.num_children > 0,
+            show_tanf=player.num_children > 0,
+            show_wic=player.num_children > 0,
+            show_head_start=player.num_children > 0,
+            show_disability=player.has_disability == 1,
+            stage1_error=stage1_error,
+            stage2_error=stage2_error,
+            treatment_format=player.treatment_format,
+        )
+
+
+# STAGE 3: Reconsideration
+class ReconsiderationPage(Page):
     form_model = "player"
     form_fields = [
-        "accept_offer",
-        "perceived_delta_true_net_income",
+        "changed_mind",
+        "final_decision",
         "reason_more_money",
         "reason_same_money",
         "reason_future_opportunities",
@@ -786,69 +842,13 @@ class MyPage(Page):
 
     @staticmethod
     def vars_for_template(player: Player):
-        cur_gross = player.current_hourly_wage * player.current_hours * WEEKS_PER_MONTH
-        off_gross = player.offer_hourly_wage * player.offer_hours * WEEKS_PER_MONTH
-
-        cur_annual = cur_gross * 12
-        off_annual = off_gross * 12
-
-        show_ccdf = player.num_children > 0
-        show_tanf = player.num_children > 0
-        show_wic = player.num_children > 0
-        show_head_start = player.num_children > 0
-        show_disability = player.has_disability == 1
-
         return dict(
-            current_wage=player.current_hourly_wage,
-            current_hours=player.current_hours,
-            current_monthly_gross=round(cur_gross, 2),
-            current_annual_gross=round(cur_annual, 2),
-            offer_monthly_gross=round(off_gross, 2),
-            offer_annual_gross=round(off_annual, 2),
-            show_benefits=True,
-            show_ccdf=show_ccdf,
-            show_tanf=show_tanf,
-            show_wic=show_wic,
-            show_head_start=show_head_start,
-            show_disability=show_disability,
-            # NEW opportunity context
-            opportunity_level=player.opportunity_level,
-            current_job_desc=player.current_job_desc,
-            offer_job_desc=player.offer_job_desc,
-            mobility_desc=player.mobility_description,
-        )
-
-
-class Results(Page):
-    @staticmethod
-    def vars_for_template(player: Player):
-        perception_error = None
-        if player.perceived_delta_true_net_income is not None:
-            perception_error = round(
-                player.perceived_delta_true_net_income - player.delta_true_net_income,
-                2
-            )
-
-        show_ccdf = player.num_children > 0
-        show_tanf = player.num_children > 0
-        show_wic = player.num_children > 0
-        show_head_start = player.num_children > 0
-        show_disability = player.has_disability == 1
-
-        return dict(
-            show_truth=True,
-            perception_error=perception_error,
-            show_ccdf=show_ccdf,
-            show_tanf=show_tanf,
-            show_wic=show_wic,
-            show_head_start=show_head_start,
-            show_disability=show_disability,
+            stage1_decision_text="Accepted" if player.stage1_decision == 1 else "Rejected",
+            stage2_decision_text="Accepted" if player.stage2_decision == 1 else "Rejected",
         )
 
 
 class FinalPageProlific(Page):
-    """Final page with Prolific completion code"""
-
     @staticmethod
     def is_displayed(player):
         return player.round_number == C.NUM_ROUNDS
@@ -862,9 +862,12 @@ class FinalPageProlific(Page):
         }
 
 
+# PAGE SEQUENCE - CORRECTED
 page_sequence = [
     WelcomeFromQualtrics,
-    MyPage,
-    Results,
+    Stage1TextPage,  # CORRECTED: was MyPage
+    Stage2TreatmentPage,
+    FeedbackPage,
+    ReconsiderationPage,
     FinalPageProlific,
 ]
