@@ -119,7 +119,7 @@ Job Offer Decision - Part 2
 
     <!-- TREATMENT CONTENT -->
     {% if treatment_format == "dashboard" %}
-        <!-- DASHBOARD VIEW (Placeholder for now) -->
+        <!-- DASHBOARD VIEW -->
         <div style="background-color: white; padding: 30px; margin: 25px 0; border: 2px solid #4caf50; border-radius: 8px;">
             <h3 style="margin-top: 0; color: #2e7d32; text-align: center;">📊 Financial Comparison Dashboard</h3>
 
@@ -239,7 +239,7 @@ Job Offer Decision - Part 2
         </div>
 
     {% else %}
-        <!-- CHATGPT VIEW (Placeholder for now) -->
+        <!-- CHATGPT VIEW -->
         <div style="background-color: white; padding: 30px; margin: 25px 0; border: 2px solid #2196f3; border-radius: 8px;">
             <h3 style="margin-top: 0; color: #1565c0; text-align: center;">💬 AI Financial Analysis</h3>
 
@@ -316,7 +316,7 @@ Job Offer Decision - Part 2
 
         <div style="margin-bottom: 25px;">
             <label style="font-weight: bold; display: block; margin-bottom: 10px;">What would you do?</label>
-            {{ formfield 'stage2_decision' with choices=[[1, "Accept the offer"], [0, "Keep current job"]] }}
+            {{ formfield 'stage2_decision' }}
         </div>
 
         <div id="perception-section" style="display: none; margin-top: 30px; padding-top: 25px; border-top: 2px solid #ffb74d;">
