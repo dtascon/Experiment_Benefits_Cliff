@@ -188,7 +188,7 @@ Feedback on Your Decisions
             <p style="font-size: 1.1em; line-height: 1.6;">
                 You estimated: <strong>{% if player.stage1_perceived_delta > 0 %}+{% endif %}${{ player.stage1_perceived_delta }}</strong><br>
                 Actual change: <strong>{% if player.delta_true_net_income > 0 %}+{% endif %}${{ player.delta_true_net_income }}</strong><br>
-                {% if stage1_error is not None %}
+                {% if stage1_error != None %}
                 Your estimate was
                 <strong style="{% if stage1_error_abs < 100 %}color: #2e7d32;{% elif stage1_error_abs < 300 %}color: #ff9800;{% else %}color: #c62828;{% endif %}">
                     {% if stage1_error > 0 %}${{ stage1_error_abs }} too high{% elif stage1_error < 0 %}${{ stage1_error_abs }} too low{% else %}exactly right!{% endif %}
@@ -202,7 +202,7 @@ Feedback on Your Decisions
             <p style="font-size: 1.1em; line-height: 1.6;">
                 You estimated: <strong>{% if player.stage2_perceived_delta > 0 %}+{% endif %}${{ player.stage2_perceived_delta }}</strong><br>
                 Actual change: <strong>{% if player.delta_true_net_income > 0 %}+{% endif %}${{ player.delta_true_net_income }}</strong><br>
-                {% if stage2_error is not None %}
+                {% if stage2_error != None %}
                 Your estimate was
                 <strong style="{% if stage2_error_abs < 100 %}color: #2e7d32;{% elif stage2_error_abs < 300 %}color: #ff9800;{% else %}color: #c62828;{% endif %}">
                     {% if stage2_error > 0 %}${{ stage2_error_abs }} too high{% elif stage2_error < 0 %}${{ stage2_error_abs }} too low{% else %}exactly right!{% endif %}
@@ -211,7 +211,7 @@ Feedback on Your Decisions
             </p>
         </div>
 
-        {% if stage1_error is not None and stage2_error is not None %}
+        {% if stage1_error != None and stage2_error != None %}
         <div style="background-color: #fff3e0; padding: 15px; margin: 15px 0; border-left: 4px solid #ff9800; border-radius: 4px;">
             <p style="margin: 0; font-size: 1.05em;">
                 <strong>💡 Improvement:</strong>
