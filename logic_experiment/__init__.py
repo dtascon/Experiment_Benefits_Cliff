@@ -1,4 +1,4 @@
-Bfrom otree.api import *
+from otree.api import *
 import csv
 import random
 import string
