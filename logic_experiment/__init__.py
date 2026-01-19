@@ -5,7 +5,8 @@ import string
 from pathlib import Path
 
 doc = """
-Enhanced PRD / Benefit Cliff Experiment - 60 Strategic Vignettes
+Enhanced PRD / Benefit Cliff Experiment - 20 Strategic Vignettes
+3 Geometries × 3 Opportunity Levels × 2 Repetitions + 2 Attention Checks = 20 vignettes
 """
 
 # ----------------------------
@@ -13,7 +14,7 @@ Enhanced PRD / Benefit Cliff Experiment - 60 Strategic Vignettes
 # ----------------------------
 
 SEED = 123
-N_VIGNETTES = 60
+N_VIGNETTES = 20  # Changed from 60 to 20
 
 WEEKS_PER_MONTH = 52 / 12
 PAYROLL_TAX_RATE = 0.0765
@@ -76,32 +77,6 @@ class LocationBenefits:
             self.ccdf_exit = 2800.0
             self.tanf_max = 303.0
             self.tanf_limit = 450.0
-
-        elif self.state == "NY":
-            self.snap_max_gross = 2830.0 if self.num_children > 0 else 1580.0
-            self.snap_net_limit = 2177.0 if self.num_children > 0 else 1215.0
-            self.snap_max_benefit = 740.0 if self.num_children > 0 else 291.0
-            self.medicaid_value = 450.0
-            self.medicaid_adult_limit = 1806.0
-            self.medicaid_child_limit = 4168.0
-            self.ccdf_max = 900.0
-            self.ccdf_copay_threshold = 2000.0
-            self.ccdf_exit = 3500.0
-            self.tanf_max = 789.0
-            self.tanf_limit = 800.0
-
-        elif self.state == "OH":
-            self.snap_max_gross = 2830.0 if self.num_children > 0 else 1580.0
-            self.snap_net_limit = 2177.0 if self.num_children > 0 else 1215.0
-            self.snap_max_benefit = 740.0 if self.num_children > 0 else 291.0
-            self.medicaid_value = 450.0
-            self.medicaid_adult_limit = 1806.0
-            self.medicaid_child_limit = 4168.0
-            self.ccdf_max = 750.0
-            self.ccdf_copay_threshold = 1700.0
-            self.ccdf_exit = 3100.0
-            self.tanf_max = 385.0
-            self.tanf_limit = 600.0
 
         self.eitc_phase_in = 0.40 if self.num_children >= 3 else (0.34 if self.num_children == 2 else 0.15)
         self.eitc_max = 6935.0 if self.num_children >= 3 else (5920.0 if self.num_children == 2 else 3584.0)
@@ -247,129 +222,160 @@ def app_dir() -> Path:
 
 
 def vignette_csv_path() -> Path:
-    return app_dir() / "vignettes_60_strategic.csv"
+    return app_dir() / "vignettes_20_strategic.csv"
 
 
 def generate_vignettes_csv(n: int, seed: int) -> None:
-    """Generate 60 vignettes: 20 CLIFF, 20 PLATEAU, 20 POSITIVE"""
+    """
+    Generate 20 vignettes:
+    - 3 geometries (CLIFF, PLATEAU, POSITIVE) × 3 opportunities (LOW, MED, HIGH) = 9 types
+    - Each type repeated 2 times = 18 vignettes
+    - 2 attention checks = 20 total
+    """
     rng = random.Random(seed)
 
     locations = [
-        ("PA", "Allegheny"), ("PA", "Philadelphia"),
-        ("GA", "Fulton"), ("GA", "Cobb"),
-        ("TX", "Harris"), ("TX", "Dallas"),
-        ("NY", "New York"), ("NY", "Erie"),
-        ("OH", "Cuyahoga"), ("OH", "Franklin"),
+        ("PA", "Allegheny"), ("GA", "Fulton"), ("TX", "Harris")
     ]
 
+    # Simplified family types for 20 vignettes
     family_types = [
+        {"num_children": 2, "child_ages": [3, 6], "has_disability": False, "adult_age": 32, "is_married": False,
+         "spouse_age": None, "other_adults": 0, "desc": "Single parent (age 32), 2 children (ages 3, 6)"},
+        {"num_children": 1, "child_ages": [4], "has_disability": False, "adult_age": 29, "is_married": False,
+         "spouse_age": None, "other_adults": 1,
+         "desc": "Single parent (age 29), 1 child (age 4), living with 1 other adult"},
+        {"num_children": 2, "child_ages": [5, 9], "has_disability": False, "adult_age": 36, "is_married": True,
+         "spouse_age": 38, "other_adults": 0, "desc": "Married parents (ages 36 & 38), 2 children (ages 5, 9)"},
         {"num_children": 0, "child_ages": [], "has_disability": False, "adult_age": 28, "is_married": False,
-         "spouse_age": None, "other_adults": 0, "desc": "Single adult (age 28), no children, living alone"},
-        {"num_children": 0, "child_ages": [], "has_disability": False, "adult_age": 35, "is_married": False,
-         "spouse_age": None, "other_adults": 0, "desc": "Single adult (age 35), no children, living alone"},
-        {"num_children": 0, "child_ages": [], "has_disability": False, "adult_age": 26, "is_married": False,
-         "spouse_age": None, "other_adults": 1,
-         "desc": "Single adult (age 26), living with 1 other adult (parent/sibling/roommate)"},
-        {"num_children": 0, "child_ages": [], "has_disability": False, "adult_age": 31, "is_married": False,
-         "spouse_age": None, "other_adults": 2, "desc": "Single adult (age 31), living with 2 other adults"},
-        {"num_children": 0, "child_ages": [], "has_disability": False, "adult_age": 32, "is_married": True,
-         "spouse_age": 34, "other_adults": 0, "desc": "Married couple (ages 32 & 34), no children"},
-        {"num_children": 0, "child_ages": [], "has_disability": False, "adult_age": 42, "is_married": True,
-         "spouse_age": 40, "other_adults": 0, "desc": "Married couple (ages 42 & 40), no children"},
-        {"num_children": 1, "child_ages": [3], "has_disability": False, "adult_age": 32, "is_married": False,
-         "spouse_age": None, "other_adults": 0, "desc": "Single parent (age 32), 1 child (age 3)"},
-        {"num_children": 2, "child_ages": [2, 6], "has_disability": False, "adult_age": 34, "is_married": False,
-         "spouse_age": None, "other_adults": 0, "desc": "Single parent (age 34), 2 children (ages 2, 6)"},
-        {"num_children": 1, "child_ages": [7], "has_disability": False, "adult_age": 29, "is_married": False,
-         "spouse_age": None, "other_adults": 1,
-         "desc": "Single parent (age 29), 1 child (age 7), living with 1 other adult (grandparent)"},
-        {"num_children": 2, "child_ages": [1, 4], "has_disability": False, "adult_age": 27, "is_married": False,
-         "spouse_age": None, "other_adults": 1,
-         "desc": "Single parent (age 27), 2 children (ages 1, 4), living with 1 other adult"},
-        {"num_children": 1, "child_ages": [7], "has_disability": False, "adult_age": 38, "is_married": True,
-         "spouse_age": 36, "other_adults": 0, "desc": "Married parents (ages 38 & 36), 1 child (age 7)"},
-        {"num_children": 2, "child_ages": [4, 8], "has_disability": False, "adult_age": 36, "is_married": True,
-         "spouse_age": 38, "other_adults": 0, "desc": "Married parents (ages 36 & 38), 2 children (ages 4, 8)"},
-        {"num_children": 3, "child_ages": [2, 5, 10], "has_disability": False, "adult_age": 37, "is_married": True,
-         "spouse_age": 39, "other_adults": 0, "desc": "Married parents (ages 37 & 39), 3 children (ages 2, 5, 10)"},
-        {"num_children": 2, "child_ages": [3, 7], "has_disability": False, "adult_age": 35, "is_married": True,
-         "spouse_age": 37, "other_adults": 1,
-         "desc": "Married parents (ages 35 & 37), 2 children (ages 3, 7), living with 1 other adult (grandparent)"},
-        {"num_children": 1, "child_ages": [14], "has_disability": False, "adult_age": 45, "is_married": False,
-         "spouse_age": None, "other_adults": 0, "desc": "Single parent (age 45), 1 teen (age 14)"},
-        {"num_children": 2, "child_ages": [13, 16], "has_disability": False, "adult_age": 47, "is_married": False,
-         "spouse_age": None, "other_adults": 0, "desc": "Single parent (age 47), 2 teens (ages 13, 16)"},
-        {"num_children": 2, "child_ages": [13, 16], "has_disability": False, "adult_age": 47, "is_married": True,
-         "spouse_age": 49, "other_adults": 0, "desc": "Married parents (ages 47 & 49), 2 teens (ages 13, 16)"},
-        {"num_children": 0, "child_ages": [], "has_disability": True, "adult_age": 33, "is_married": False,
-         "spouse_age": None, "other_adults": 0, "desc": "Single adult with disability (age 33), living alone"},
-        {"num_children": 0, "child_ages": [], "has_disability": True, "adult_age": 40, "is_married": True,
-         "spouse_age": 42, "other_adults": 0, "desc": "Married couple (ages 40 & 42), primary earner has disability"},
-        {"num_children": 1, "child_ages": [6], "has_disability": True, "adult_age": 36, "is_married": False,
-         "spouse_age": None, "other_adults": 1,
-         "desc": "Single parent with disability (age 36), 1 child (age 6), living with 1 other adult"},
-        {"num_children": 2, "child_ages": [5, 9], "has_disability": True, "adult_age": 39, "is_married": True,
-         "spouse_age": 41, "other_adults": 0,
-         "desc": "Married parents (ages 39 & 41), 2 children (ages 5, 9), primary earner has disability"},
+         "spouse_age": None, "other_adults": 0, "desc": "Single adult (age 28), no children"},
     ]
 
+    # Opportunity level descriptions
+    opportunity_descriptions = {
+        "low": {
+            "current_job": "Retail cashier at local store",
+            "offer_job": "Retail cashier at different store (same responsibilities)",
+            "mobility_text": "Same job type, no promotion path mentioned"
+        },
+        "medium": {
+            "current_job": "Part-time retail associate",
+            "offer_job": "Full-time administrative assistant at local office",
+            "mobility_text": "Office environment, some skill development, modest promotion potential"
+        },
+        "high": {
+            "current_job": "Part-time service worker",
+            "offer_job": "Full-time entry-level position at established company",
+            "mobility_text": "Professional experience, explicit promotion pathway to supervisor ($35k+), employer health benefits"
+        }
+    }
+
+    # Define scenarios for each geometry type
     cliff_scenarios = [
-        {"current_wage": 11, "offer_wage": 14, "hours": 25},
-        {"current_wage": 11, "offer_wage": 15, "hours": 30},
-        {"current_wage": 12, "offer_wage": 16, "hours": 28},
-        {"current_wage": 10, "offer_wage": 14, "hours": 32},
-        {"current_wage": 11, "offer_wage": 15, "hours": 35},
-        {"current_wage": 12, "offer_wage": 15, "hours": 30},
-        {"current_wage": 11, "offer_wage": 14, "hours": 32},
-        {"current_wage": 10, "offer_wage": 13, "hours": 35},
-        {"current_wage": 12, "offer_wage": 16, "hours": 25},
-        {"current_wage": 11, "offer_wage": 16, "hours": 28},
+        {"current_wage": 11, "offer_wage": 14, "hours": 30},
+        {"current_wage": 12, "offer_wage": 15, "hours": 28},
     ]
 
     plateau_scenarios = [
-        {"current_wage": 13, "offer_wage": 14, "hours": 30},
         {"current_wage": 14, "offer_wage": 15, "hours": 32},
         {"current_wage": 15, "offer_wage": 16, "hours": 30},
-        {"current_wage": 16, "offer_wage": 17, "hours": 28},
-        {"current_wage": 14, "offer_wage": 15, "hours": 35},
-        {"current_wage": 13, "offer_wage": 14, "hours": 32},
-        {"current_wage": 15, "offer_wage": 16, "hours": 35},
-        {"current_wage": 14, "offer_wage": 16, "hours": 30},
-        {"current_wage": 16, "offer_wage": 17, "hours": 32},
-        {"current_wage": 15, "offer_wage": 17, "hours": 28},
     ]
 
     positive_scenarios = [
-        {"current_wage": 10, "offer_wage": 12, "hours": 20},
-        {"current_wage": 11, "offer_wage": 13, "hours": 22},
-        {"current_wage": 12, "offer_wage": 13, "hours": 25},
-        {"current_wage": 10, "offer_wage": 11, "hours": 28},
+        {"current_wage": 10, "offer_wage": 12, "hours": 22},
         {"current_wage": 15, "offer_wage": 20, "hours": 35},
-        {"current_wage": 16, "offer_wage": 22, "hours": 35},
-        {"current_wage": 12, "offer_wage": 14, "hours": 22},
-        {"current_wage": 11, "offer_wage": 12, "hours": 25},
-        {"current_wage": 17, "offer_wage": 22, "hours": 40},
-        {"current_wage": 14, "offer_wage": 20, "hours": 32},
     ]
 
     rows = []
+    vignette_counter = 1
 
-    for scenario_type, scenarios, target_label in [
+    # Generate 2 attention checks first
+    for i in range(2):
+        family = rng.choice(family_types)
+        state, county = rng.choice(locations)
+
+        location = LocationBenefits(
+            state=state, county=county,
+            num_children=family["num_children"],
+            child_ages=family["child_ages"],
+            has_disability=family["has_disability"]
+        )
+
+        # Attention check: obvious choice (much higher wage, no cliff)
+        current_wage = 10.0
+        offer_wage = 18.0
+        hours = 25
+
+        cur = compute_bundle(current_wage, hours, location)
+        off = compute_bundle(offer_wage, hours, location)
+
+        household_size = 1 + (1 if family["is_married"] else 0) + family["other_adults"] + family["num_children"]
+        child_ages_str = ", ".join(str(age) for age in family["child_ages"]) if family["num_children"] > 0 else "none"
+
+        row = dict(
+            vignette_id=vignette_counter,
+            scenario_type="attention_check",
+            target_type="attention_check",
+            opportunity_level="high",
+            current_job_desc=opportunity_descriptions["high"]["current_job"],
+            offer_job_desc=opportunity_descriptions["high"]["offer_job"],
+            mobility_description=opportunity_descriptions["high"]["mobility_text"],
+            state=state, county=county,
+            family_description=family["desc"],
+            num_children=family["num_children"],
+            has_disability=int(family["has_disability"]),
+            adult_age=family["adult_age"],
+            is_married=int(family["is_married"]),
+            spouse_age=family["spouse_age"] if family["spouse_age"] is not None else 0,
+            other_adults=family["other_adults"],
+            household_size=household_size,
+            child_ages_str=child_ages_str,
+            current_hourly_wage=round(current_wage, 2),
+            current_hours=int(hours),
+            offer_hourly_wage=round(offer_wage, 2),
+            offer_hours=int(hours),
+            cur_true_net_income=cur["true_net_income"],
+            off_true_net_income=off["true_net_income"],
+            cur_monthly_gross=cur["monthly_gross"],
+            off_monthly_gross=off["monthly_gross"],
+            cur_monthly_net_earnings=cur["monthly_net_earnings"],
+            off_monthly_net_earnings=off["monthly_net_earnings"],
+            cur_snap=cur["snap"], off_snap=off["snap"],
+            cur_medicaid=cur["medicaid"], off_medicaid=off["medicaid"],
+            cur_ccdf=cur["ccdf"], off_ccdf=off["ccdf"],
+            cur_tanf=cur["tanf"], off_tanf=off["tanf"],
+            cur_wic=cur["wic"], off_wic=off["wic"],
+            cur_head_start=cur["head_start"], off_head_start=off["head_start"],
+            cur_eitc=cur["eitc"], off_eitc=off["eitc"],
+            cur_ssdi=cur["ssdi"], off_ssdi=off["ssdi"],
+            cur_ssi=cur["ssi"], off_ssi=off["ssi"],
+            cur_benefits_total=cur["benefits_total"],
+            off_benefits_total=off["benefits_total"],
+            delta_true_net_income=round(off["true_net_income"] - cur["true_net_income"], 2),
+            delta_benefits_total=round(off["benefits_total"] - cur["benefits_total"], 2),
+            delta_net_earnings=round(off["monthly_net_earnings"] - cur["monthly_net_earnings"], 2),
+            is_cliff=0,
+            programs_lost=0,
+            programs_reduced=0,
+        )
+        rows.append(row)
+        vignette_counter += 1
+
+    # Generate 18 main vignettes (3 geometries × 3 opportunities × 2 repetitions)
+    for geometry, scenarios, target_label in [
         ("CLIFF", cliff_scenarios, "cliff"),
         ("PLATEAU", plateau_scenarios, "plateau"),
         ("POSITIVE", positive_scenarios, "positive")
     ]:
-        for iteration in range(2):
-            for scenario_idx, scenario in enumerate(scenarios):
-                state, county = rng.choice(locations)
+        for opp_level in ["low", "medium", "high"]:
+            for rep in range(2):  # 2 repetitions
+                scenario = scenarios[rep % len(scenarios)]
                 family = rng.choice(family_types)
+                state, county = rng.choice(locations)
 
-                current_wage = float(scenario["current_wage"])
-                offer_wage = float(scenario["offer_wage"])
+                current_wage = float(scenario["current_wage"]) + rng.uniform(-0.5, 0.5)
+                offer_wage = float(scenario["offer_wage"]) + rng.uniform(-0.5, 0.5)
                 hours = scenario["hours"]
-
-                current_wage += rng.uniform(-0.5, 0.5)
-                offer_wage += rng.uniform(-0.5, 0.5)
 
                 current_wage = max(10.0, current_wage)
                 if offer_wage <= current_wage:
@@ -399,21 +405,19 @@ def generate_vignettes_csv(n: int, seed: int) -> None:
                 programs_lost = sum([1 for prog in programs if cur[prog] > 0 and off[prog] == 0])
                 programs_reduced = sum([1 for prog in programs if cur[prog] > off[prog] > 0])
 
-                if family["num_children"] > 0:
-                    child_ages_str = ", ".join(str(age) for age in family["child_ages"])
-                else:
-                    child_ages_str = "none"
-
-                household_size = 1
-                if family["is_married"]:
-                    household_size += 1
-                household_size += family["other_adults"]
-                household_size += family["num_children"]
+                household_size = 1 + (1 if family["is_married"] else 0) + family["other_adults"] + family[
+                    "num_children"]
+                child_ages_str = ", ".join(str(age) for age in family["child_ages"]) if family[
+                                                                                            "num_children"] > 0 else "none"
 
                 row = dict(
-                    vignette_id=len(rows) + 1,
+                    vignette_id=vignette_counter,
                     scenario_type=actual_type,
                     target_type=target_label,
+                    opportunity_level=opp_level,
+                    current_job_desc=opportunity_descriptions[opp_level]["current_job"],
+                    offer_job_desc=opportunity_descriptions[opp_level]["offer_job"],
+                    mobility_description=opportunity_descriptions[opp_level]["mobility_text"],
                     state=state, county=county,
                     family_description=family["desc"],
                     num_children=family["num_children"],
@@ -453,12 +457,16 @@ def generate_vignettes_csv(n: int, seed: int) -> None:
                     programs_reduced=programs_reduced,
                 )
                 rows.append(row)
+                vignette_counter += 1
 
+    # Shuffle all vignettes
     rng.shuffle(rows)
 
+    # Reassign IDs after shuffle
     for i, row in enumerate(rows):
         row["vignette_id"] = i + 1
 
+    # Write to CSV
     path = vignette_csv_path()
     with path.open("w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
@@ -468,7 +476,9 @@ def generate_vignettes_csv(n: int, seed: int) -> None:
     cliff_count = sum(1 for r in rows if r["scenario_type"] == "cliff")
     plateau_count = sum(1 for r in rows if r["scenario_type"] == "plateau")
     positive_count = sum(1 for r in rows if r["scenario_type"] == "positive")
-    print(f"Generated: {cliff_count} CLIFF, {plateau_count} PLATEAU, {positive_count} POSITIVE")
+    attention_count = sum(1 for r in rows if r["scenario_type"] == "attention_check")
+    print(
+        f"Generated 20 vignettes: {cliff_count} CLIFF, {plateau_count} PLATEAU, {positive_count} POSITIVE, {attention_count} ATTENTION")
 
 
 def load_vignettes() -> list[dict]:
@@ -482,7 +492,8 @@ def load_vignettes() -> list[dict]:
                 if k in {"vignette_id", "is_cliff", "programs_lost", "programs_reduced", "num_children",
                          "has_disability", "adult_age", "is_married", "spouse_age", "other_adults", "household_size"}:
                     parsed[k] = int(float(v))
-                elif k in {"family_description", "state", "county", "scenario_type", "target_type", "child_ages_str"}:
+                elif k in {"family_description", "state", "county", "scenario_type", "target_type", "child_ages_str",
+                           "opportunity_level", "current_job_desc", "offer_job_desc", "mobility_description"}:
                     parsed[k] = v
                 else:
                     try:
@@ -509,8 +520,18 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
+    # Vignette identifiers
     vignette_id = models.IntegerField()
     scenario_type = models.StringField()
+    target_type = models.StringField()
+    opportunity_level = models.StringField()  # NEW: low/medium/high
+
+    # Job descriptions - NEW
+    current_job_desc = models.LongStringField()
+    offer_job_desc = models.LongStringField()
+    mobility_description = models.LongStringField()
+
+    # Demographics
     state = models.StringField()
     county = models.StringField()
     family_description = models.StringField()
@@ -523,11 +544,13 @@ class Player(BasePlayer):
     household_size = models.IntegerField()
     child_ages_str = models.StringField()
 
+    # Job parameters
     current_hourly_wage = models.FloatField()
     current_hours = models.IntegerField()
     offer_hourly_wage = models.FloatField()
     offer_hours = models.IntegerField()
 
+    # Current situation benefits
     cur_snap = models.FloatField()
     cur_medicaid = models.FloatField()
     cur_ccdf = models.FloatField()
@@ -540,6 +563,7 @@ class Player(BasePlayer):
     cur_benefits_total = models.FloatField()
     cur_true_net_income = models.FloatField()
 
+    # Offer situation benefits
     off_snap = models.FloatField()
     off_medicaid = models.FloatField()
     off_ccdf = models.FloatField()
@@ -552,6 +576,7 @@ class Player(BasePlayer):
     off_benefits_total = models.FloatField()
     off_true_net_income = models.FloatField()
 
+    # Deltas
     delta_true_net_income = models.FloatField()
     delta_net_earnings = models.FloatField()
     delta_benefits_total = models.FloatField()
@@ -559,6 +584,7 @@ class Player(BasePlayer):
     programs_lost = models.IntegerField()
     programs_reduced = models.IntegerField()
 
+    # EXISTING DECISIONS
     accept_offer = models.IntegerField(
         choices=[[1, "Accept the offer"], [0, "Keep current job"]],
         widget=widgets.RadioSelect,
@@ -570,6 +596,69 @@ class Player(BasePlayer):
         blank=False,
         min=-10000,
         max=10000,
+    )
+
+    # NEW QUESTIONS - Q3: Reasoning (multiple checkboxes - we'll store as string)
+    reason_more_money = models.BooleanField(
+        label="I would have more money immediately",
+        blank=True
+    )
+    reason_same_money = models.BooleanField(
+        label="I would have about the same money immediately",
+        blank=True
+    )
+    reason_future_opportunities = models.BooleanField(
+        label="I would have less money immediately, but better opportunities for the future",
+        blank=True
+    )
+    reason_salary_important = models.BooleanField(
+        label="A higher salary is important to me even if I don't net more after benefits",
+        blank=True
+    )
+    reason_reduce_benefits = models.BooleanField(
+        label="I want to reduce my reliance on government benefits",
+        blank=True
+    )
+    reason_job_title = models.BooleanField(
+        label="The job title or work environment is important to me",
+        blank=True
+    )
+    reason_not_sure = models.BooleanField(
+        label="I'm not sure about the financial impact",
+        blank=True
+    )
+    reason_other_text = models.LongStringField(
+        label="Other reason (please specify)",
+        blank=True
+    )
+
+    # NEW QUESTION - Q4: Future expectations
+    future_expectation = models.IntegerField(
+        label="Compared to your current job, how do you think accepting this offer would affect your total income (salary + benefits) in 3 years?",
+        choices=[
+            [1, "Much worse (>$5,000/year less)"],
+            [2, "Somewhat worse ($1,000-$5,000/year less)"],
+            [3, "About the same"],
+            [4, "Somewhat better ($1,000-$5,000/year more)"],
+            [5, "Much better (>$5,000/year more)"],
+        ],
+        widget=widgets.RadioSelect,
+        blank=True
+    )
+
+    # NEW QUESTION - Q5: Willingness to sacrifice (conditional on understanding loss)
+    max_acceptable_loss = models.IntegerField(
+        label="Given the opportunities this job offers, what is the MAXIMUM monthly income loss you would be willing to accept?",
+        choices=[
+            [0, "$0 (I would not accept any loss)"],
+            [50, "Up to $50/month"],
+            [100, "Up to $100/month"],
+            [150, "Up to $150/month"],
+            [200, "Up to $200/month"],
+            [999, "More than $200/month"],
+        ],
+        widget=widgets.RadioSelect,
+        blank=True
     )
 
 
@@ -594,6 +683,11 @@ def creating_session(subsession: Subsession):
     for p, v in zip(players, assignments[:n_players]):
         p.vignette_id = v["vignette_id"]
         p.scenario_type = v["scenario_type"]
+        p.target_type = v["target_type"]
+        p.opportunity_level = v["opportunity_level"]
+        p.current_job_desc = v["current_job_desc"]
+        p.offer_job_desc = v["offer_job_desc"]
+        p.mobility_description = v["mobility_description"]
         p.state = v["state"]
         p.county = v["county"]
         p.family_description = v["family_description"]
@@ -646,7 +740,6 @@ def creating_session(subsession: Subsession):
 # PAGES
 # ============================================
 
-# NEW PAGE 1: Welcome from Qualtrics
 class WelcomeFromQualtrics(Page):
     """First page after participants arrive from Qualtrics"""
 
@@ -659,29 +752,37 @@ class WelcomeFromQualtrics(Page):
         participant = player.participant
         session = player.session
 
-        # Capture IDs from URL parameters
         prolific_pid = session.config.get('prolific_pid', 'TEST_NO_ID')
         qualtrics_id = session.config.get('qualtrics_id', 'TEST_NO_ID')
 
-        # Store in participant fields
         participant.prolific_pid = prolific_pid
         participant.qualtrics_response_id = qualtrics_id
 
-        # Generate completion code for Prolific
         completion_code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
         participant.completion_code = completion_code
 
-        # Debug print
         print(f"=== Participant from Qualtrics ===")
         print(f"Prolific PID: {prolific_pid}")
         print(f"Qualtrics Response ID: {qualtrics_id}")
         print(f"Generated Completion Code: {completion_code}")
 
 
-# EXISTING PAGE 2: Main decision page
 class MyPage(Page):
     form_model = "player"
-    form_fields = ["accept_offer", "perceived_delta_true_net_income"]
+    form_fields = [
+        "accept_offer",
+        "perceived_delta_true_net_income",
+        "reason_more_money",
+        "reason_same_money",
+        "reason_future_opportunities",
+        "reason_salary_important",
+        "reason_reduce_benefits",
+        "reason_job_title",
+        "reason_not_sure",
+        "reason_other_text",
+        "future_expectation",
+        "max_acceptable_loss"
+    ]
 
     @staticmethod
     def vars_for_template(player: Player):
@@ -710,10 +811,14 @@ class MyPage(Page):
             show_wic=show_wic,
             show_head_start=show_head_start,
             show_disability=show_disability,
+            # NEW opportunity context
+            opportunity_level=player.opportunity_level,
+            current_job_desc=player.current_job_desc,
+            offer_job_desc=player.offer_job_desc,
+            mobility_desc=player.mobility_description,
         )
 
 
-# EXISTING PAGE 3: Results page
 class Results(Page):
     @staticmethod
     def vars_for_template(player: Player):
@@ -741,7 +846,6 @@ class Results(Page):
         )
 
 
-# NEW PAGE 4: Final page with Prolific completion code
 class FinalPageProlific(Page):
     """Final page with Prolific completion code"""
 
@@ -758,10 +862,9 @@ class FinalPageProlific(Page):
         }
 
 
-# PAGE SEQUENCE - Updated with new pages
 page_sequence = [
-    WelcomeFromQualtrics,  # NEW - First
-    MyPage,  # Existing
-    Results,  # Existing
-    FinalPageProlific,  # NEW - Last
+    WelcomeFromQualtrics,
+    MyPage,
+    Results,
+    FinalPageProlific,
 ]

@@ -81,23 +81,36 @@ Job Offer Decision
         </div>
     </div>
 
-    <!-- Scenario Introduction -->
+    <!-- Scenario Introduction with Opportunity Context -->
     <div style="background-color: #fff9e6; padding: 20px; margin-bottom: 25px; border-left: 5px solid #ffc107; border-radius: 4px;">
-        <h3 style="margin-top: 0; color: #f57c00;">Scenario</h3>
-        <p style="line-height: 1.6; margin-bottom: 12px;">
-            You have been working at your current job for the past year. You perform well and are valued by your employer.
-            <strong>Your employer has offered you a raise.</strong>
-        </p>
-        <p style="line-height: 1.6; margin-bottom: 12px;">
-            This is <strong>the same job with the same employer and the same responsibilities</strong> – you would continue doing the exact same work you do now.
-            The only change would be:
-        </p>
-        <ul style="line-height: 1.6; margin-left: 20px;">
-            <li><strong>Your hourly wage</strong> (how much you earn per hour)</li>
-        </ul>
-        <p style="line-height: 1.6; margin-bottom: 0; font-style: italic; color: #666;">
-            Everything else about your job remains the same: your work hours, your commute, your work relationships, your job duties, and your employer.
-        </p>
+        <h3 style="margin-top: 0; color: #f57c00;">Job Offer Scenario</h3>
+
+        <div style="margin-bottom: 15px;">
+            <p style="line-height: 1.6; margin-bottom: 12px;">
+                <strong>Your current job:</strong> {{ current_job_desc }}
+            </p>
+            <p style="line-height: 1.6; margin-bottom: 12px;">
+                <strong>Job offer:</strong> {{ offer_job_desc }}
+            </p>
+        </div>
+
+        <!-- Opportunity Level Badge -->
+        {% if opportunity_level == "high" %}
+        <div style="background-color: #e8f5e9; padding: 15px; border-left: 4px solid #4caf50; border-radius: 3px; margin-top: 15px;">
+            <p style="margin: 0; font-weight: bold; color: #2e7d32;">🚀 Career Growth Opportunity</p>
+            <p style="margin: 5px 0 0 0; color: #2e7d32;">{{ mobility_desc }}</p>
+        </div>
+        {% elif opportunity_level == "medium" %}
+        <div style="background-color: #fff3e0; padding: 15px; border-left: 4px solid #ff9800; border-radius: 3px; margin-top: 15px;">
+            <p style="margin: 0; font-weight: bold; color: #e65100;">📈 Some Growth Potential</p>
+            <p style="margin: 5px 0 0 0; color: #e65100;">{{ mobility_desc }}</p>
+        </div>
+        {% else %}
+        <div style="background-color: #f5f5f5; padding: 15px; border-left: 4px solid #9e9e9e; border-radius: 3px; margin-top: 15px;">
+            <p style="margin: 0; font-weight: bold; color: #616161;">➡️ Lateral Move</p>
+            <p style="margin: 5px 0 0 0; color: #616161;">{{ mobility_desc }}</p>
+        </div>
+        {% endif %}
     </div>
 
     <h2 style="color: #333; border-bottom: 2px solid #ddd; padding-bottom: 10px;">Compare Your Options</h2>
@@ -169,7 +182,7 @@ Job Offer Decision
     <div style="background-color: #e3f2fd; padding: 20px; margin: 20px 0; border-left: 5px solid #1976d2; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
         <h3 style="margin-top: 0; color: #1565c0;">
             <span style="background-color: #1976d2; color: white; padding: 5px 12px; border-radius: 3px; margin-right: 10px;">OPTION B</span>
-            Accept the Raise (Same Job, Same Hours, Higher Wage)
+            Accept the New Job Offer
         </h3>
 
         <div style="background-color: white; padding: 15px; border-radius: 4px; margin: 15px 0;">
@@ -181,7 +194,7 @@ Job Offer Decision
                 </tr>
                 <tr>
                     <td style="padding: 5px 0;"><strong>Hours per week:</strong></td>
-                    <td style="padding: 5px 0;">{{ player.offer_hours }} hours <span style="color: #1976d2; font-weight: bold;">(same as current)</span></td>
+                    <td style="padding: 5px 0;">{{ player.offer_hours }} hours</td>
                 </tr>
                 <tr style="background-color: #e3f2fd;">
                     <td style="padding: 8px 5px;"><strong>Monthly gross earnings:</strong></td>
@@ -235,31 +248,32 @@ Job Offer Decision
         </h3>
 
         <p style="font-size: 1.05em; line-height: 1.6; margin-bottom: 20px;">
-            Considering everything you've seen above – the change in earnings, the change in benefits, and any other factors that matter to you and your household – <strong>which option would you choose?</strong>
+            Considering everything you've seen above – the change in earnings, the change in benefits, the career opportunities, and any other factors that matter to you and your household – <strong>which option would you choose?</strong>
         </p>
 
         <div id="decision-question">
             {{ formfield 'accept_offer' }}
         </div>
 
+        <!-- Q1: Perception of net income change -->
         <div id="perception-section" style="display: none; margin-top: 30px; padding-top: 25px; border-top: 2px solid #ffb74d;">
-            <h4 style="color: #e65100;">Now, help us understand your perception</h4>
+            <h4 style="color: #e65100;">💭 What do you think the financial impact would be?</h4>
 
             <div id="accept-text" style="display: none;">
                 <p style="background-color: #e3f2fd; padding: 15px; border-left: 4px solid #1976d2; border-radius: 3px;">
-                    You chose to <strong>ACCEPT</strong> the raise (Option B).
+                    You chose to <strong>ACCEPT</strong> the new job (Option B).
                     <br><br>
                     Thinking about <strong>your household's total monthly resources</strong> (both your take-home earnings AND all benefits combined),
-                    what do you think the change would be if you accept this raise compared to keeping your current wage?
+                    what do you think the change would be if you accept this offer compared to keeping your current job?
                 </p>
             </div>
 
             <div id="reject-text" style="display: none;">
                 <p style="background-color: #f5f5f5; padding: 15px; border-left: 4px solid #757575; border-radius: 3px;">
-                    You chose to <strong>KEEP</strong> your current wage (Option A).
+                    You chose to <strong>KEEP</strong> your current job (Option A).
                     <br><br>
                     Thinking about <strong>your household's total monthly resources</strong> (both your take-home earnings AND all benefits combined),
-                    what do you think the change would be if you had accepted the raise instead?
+                    what do you think the change would be if you had accepted the new job instead?
                 </p>
             </div>
 
@@ -277,6 +291,43 @@ Job Offer Decision
                 </ul>
             </div>
         </div>
+
+        <!-- Q3: Reasoning (NEW) -->
+        <div id="reasoning-section" style="display: none; margin-top: 30px; padding-top: 25px; border-top: 2px solid #ffb74d;">
+            <h4 style="color: #e65100;">🤔 Why did you make this choice?</h4>
+            <p style="font-size: 0.95em; color: #666; margin-bottom: 15px;">Select all that apply:</p>
+
+            <div style="background-color: white; padding: 20px; border-radius: 4px;">
+                {{ formfield 'reason_more_money' }}
+                {{ formfield 'reason_same_money' }}
+                {{ formfield 'reason_future_opportunities' }}
+                {{ formfield 'reason_salary_important' }}
+                {{ formfield 'reason_reduce_benefits' }}
+                {{ formfield 'reason_job_title' }}
+                {{ formfield 'reason_not_sure' }}
+
+                <div style="margin-top: 15px;">
+                    {{ formfield 'reason_other_text' }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Q4: Future Expectations (NEW) -->
+        <div id="future-section" style="display: none; margin-top: 30px; padding-top: 25px; border-top: 2px solid #ffb74d;">
+            <h4 style="color: #e65100;">🔮 Thinking about the future...</h4>
+
+            {{ formfield 'future_expectation' }}
+        </div>
+
+        <!-- Q5: Willingness to Sacrifice (NEW - conditional) -->
+        <div id="sacrifice-section" style="display: none; margin-top: 30px; padding-top: 25px; border-top: 2px solid #ffb74d;">
+            <h4 style="color: #e65100;">💰 Trade-off question</h4>
+            <p style="font-size: 0.95em; color: #666; margin-bottom: 15px;">
+                You indicated that you think your net monthly resources would <strong>decrease</strong> if you accept this offer.
+            </p>
+
+            {{ formfield 'max_acceptable_loss' }}
+        </div>
     </div>
 
     {% next_button %}
@@ -287,10 +338,15 @@ Job Offer Decision
     const acceptRadio = document.querySelector('input[name="accept_offer"][value="1"]');
     const rejectRadio = document.querySelector('input[name="accept_offer"][value="0"]');
     const perceptionSection = document.getElementById('perception-section');
+    const reasoningSection = document.getElementById('reasoning-section');
+    const futureSection = document.getElementById('future-section');
+    const sacrificeSection = document.getElementById('sacrifice-section');
     const acceptText = document.getElementById('accept-text');
     const rejectText = document.getElementById('reject-text');
+    const perceptionInput = document.querySelector('input[name="perceived_delta_true_net_income"]');
 
-    function updatePerceptionSection() {
+    function updateSections() {
+        // Show perception section after decision
         if (acceptRadio.checked) {
             perceptionSection.style.display = 'block';
             acceptText.style.display = 'block';
@@ -300,13 +356,29 @@ Job Offer Decision
             acceptText.style.display = 'none';
             rejectText.style.display = 'block';
         }
+
+        // Show reasoning and future sections once perception is filled
+        if (perceptionInput.value) {
+            reasoningSection.style.display = 'block';
+            futureSection.style.display = 'block';
+
+            // Show sacrifice section only if they predicted a loss
+            const perceivedValue = parseFloat(perceptionInput.value);
+            if (perceivedValue < 0) {
+                sacrificeSection.style.display = 'block';
+            } else {
+                sacrificeSection.style.display = 'none';
+            }
+        }
     }
 
-    acceptRadio.addEventListener('change', updatePerceptionSection);
-    rejectRadio.addEventListener('change', updatePerceptionSection);
+    acceptRadio.addEventListener('change', updateSections);
+    rejectRadio.addEventListener('change', updateSections);
+    perceptionInput.addEventListener('input', updateSections);
 
+    // Initialize on page load
     if (acceptRadio.checked || rejectRadio.checked) {
-        updatePerceptionSection();
+        updateSections();
     }
 </script>
 
