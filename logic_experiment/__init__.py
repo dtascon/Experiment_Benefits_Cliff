@@ -569,7 +569,11 @@ class Player(BasePlayer):
     treatment_format = models.StringField()
 
     # STAGE 1: Text baseline responses
-    stage1_perceived_delta = models.FloatField(blank=True)
+    stage1_perceived_delta = models.FloatField(
+        blank=True,
+        min=-10000,
+        max=10000
+    )
     stage1_decision = models.IntegerField(
         choices=[[1, "Accept the offer"], [0, "Keep current job"]],
         widget=widgets.RadioSelect,
@@ -577,7 +581,11 @@ class Player(BasePlayer):
     )
 
     # STAGE 2: Treatment responses
-    stage2_perceived_delta = models.FloatField(blank=True)
+    stage2_perceived_delta = models.FloatField(
+        blank=True,
+        min=-10000,
+        max=10000
+    )
     stage2_decision = models.IntegerField(
         choices=[[1, "Accept the offer"], [0, "Keep current job"]],
         widget=widgets.RadioSelect,
