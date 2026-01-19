@@ -858,6 +858,9 @@ class FeedbackPage(Page):
             delta_eitc=delta_eitc,
             delta_ssdi=delta_ssdi,
             delta_ssi=delta_ssi,
+            current_job_desc=player.current_job_desc,
+            offer_job_desc=player.offer_job_desc,
+            mobility_desc=player.mobility_description,
         )
 
 
