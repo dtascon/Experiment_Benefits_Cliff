@@ -212,18 +212,6 @@ Feedback on Your Decisions
         </div>
 
         {% if stage1_error != None and stage2_error != None %}
-        <div style="background-color: #fff3e0; padding: 15px; margin: 15px 0; border-left: 4px solid #ff9800; border-radius: 4px;">
-            <p style="margin: 0; font-size: 1.05em;">
-                <strong>💡 Improvement:</strong>
-                {% if stage2_error_abs < stage1_error_abs %}
-                    Your estimate improved by ${{ stage1_error_abs|add:"-"|add:stage2_error_abs|abs }} after seeing the {% if treatment_format == "dashboard" %}dashboard{% else %}AI analysis{% endif %}.
-                {% elif stage2_error_abs > stage1_error_abs %}
-                    Your estimate was ${{ stage2_error_abs|add:"-"|add:stage1_error_abs|abs }} further from the actual value after seeing the {% if treatment_format == "dashboard" %}dashboard{% else %}AI analysis{% endif %}.
-                {% else %}
-                    Your estimate accuracy remained the same.
-                {% endif %}
-            </p>
-        </div>
         {% endif %}
     </div>
 
