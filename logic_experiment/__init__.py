@@ -21,8 +21,6 @@ PAYROLL_TAX_RATE = 0.0765
 INCOME_TAX_RATE = 0.10
 
 
-# [ALL THE LocationBenefits CLASS AND HELPER FUNCTIONS]
-
 class LocationBenefits:
     """Location and family-specific benefit rules based on PRD Dashboard"""
 
@@ -394,10 +392,8 @@ def generate_vignettes_csv(n: int, seed: int) -> None:
                 programs_lost = sum([1 for prog in programs if cur[prog] > 0 and off[prog] == 0])
                 programs_reduced = sum([1 for prog in programs if cur[prog] > off[prog] > 0])
 
-                household_size = 1 + (1 if family["is_married"] else 0) + family["other_adults"] + family[
-                    "num_children"]
-                child_ages_str = ", ".join(str(age) for age in family["child_ages"]) if family[
-                                                                                            "num_children"] > 0 else "none"
+                household_size = 1 + (1 if family["is_married"] else 0) + family["other_adults"] + family["num_children"]
+                child_ages_str = ", ".join(str(age) for age in family["child_ages"]) if family["num_children"] > 0 else "none"
 
                 row = dict(
                     vignette_id=vignette_counter,
@@ -457,13 +453,6 @@ def generate_vignettes_csv(n: int, seed: int) -> None:
         writer = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
         writer.writeheader()
         writer.writerows(rows)
-
-    cliff_count = sum(1 for r in rows if r["scenario_type"] == "cliff")
-    plateau_count = sum(1 for r in rows if r["scenario_type"] == "plateau")
-    positive_count = sum(1 for r in rows if r["scenario_type"] == "positive")
-    attention_count = sum(1 for r in rows if r["scenario_type"] == "attention_check")
-    print(
-        f"Generated 20 vignettes: {cliff_count} CLIFF, {plateau_count} PLATEAU, {positive_count} POSITIVE, {attention_count} ATTENTION")
 
 
 def load_vignettes() -> list[dict]:
@@ -550,6 +539,8 @@ class Player(BasePlayer):
     cur_ssi = models.FloatField()
     cur_benefits_total = models.FloatField()
     cur_true_net_income = models.FloatField()
+    cur_monthly_gross = models.FloatField()
+    cur_monthly_net_earnings = models.FloatField()
 
     # Offer benefits
     off_snap = models.FloatField()
@@ -563,6 +554,8 @@ class Player(BasePlayer):
     off_ssi = models.FloatField()
     off_benefits_total = models.FloatField()
     off_true_net_income = models.FloatField()
+    off_monthly_gross = models.FloatField()
+    off_monthly_net_earnings = models.FloatField()
 
     # Deltas
     delta_true_net_income = models.FloatField()
@@ -576,26 +569,18 @@ class Player(BasePlayer):
     treatment_format = models.StringField()
 
     # STAGE 1: Text baseline responses
-    stage1_perceived_delta = models.FloatField(
-        label="What do you think the change in your monthly total resources would be?",
-        blank=True
-    )
+    stage1_perceived_delta = models.FloatField(blank=True)
     stage1_decision = models.IntegerField(
         choices=[[1, "Accept the offer"], [0, "Keep current job"]],
         widget=widgets.RadioSelect,
-        label="What would you do?",
         blank=True
     )
 
     # STAGE 2: Treatment responses
-    stage2_perceived_delta = models.FloatField(
-        label="What do you think the change in your monthly total resources would be?",
-        blank=True
-    )
+    stage2_perceived_delta = models.FloatField(blank=True)
     stage2_decision = models.IntegerField(
         choices=[[1, "Accept the offer"], [0, "Keep current job"]],
         widget=widgets.RadioSelect,
-        label="What would you do?",
         blank=True
     )
 
@@ -605,10 +590,7 @@ class Player(BasePlayer):
         blank=True
     )
 
-    changed_mind = models.BooleanField(
-        label="Would you like to change your previous decision?",
-        blank=True
-    )
+    changed_mind = models.BooleanField(blank=True)
 
     # Q3: Reasoning
     reason_more_money = models.BooleanField(blank=True)
@@ -699,6 +681,8 @@ def creating_session(subsession: Subsession):
         p.cur_ssi = v["cur_ssi"]
         p.cur_benefits_total = v["cur_benefits_total"]
         p.cur_true_net_income = v["cur_true_net_income"]
+        p.cur_monthly_gross = v["cur_monthly_gross"]
+        p.cur_monthly_net_earnings = v["cur_monthly_net_earnings"]
 
         p.off_snap = v["off_snap"]
         p.off_medicaid = v["off_medicaid"]
@@ -711,6 +695,8 @@ def creating_session(subsession: Subsession):
         p.off_ssi = v["off_ssi"]
         p.off_benefits_total = v["off_benefits_total"]
         p.off_true_net_income = v["off_true_net_income"]
+        p.off_monthly_gross = v["off_monthly_gross"]
+        p.off_monthly_net_earnings = v["off_monthly_net_earnings"]
 
         p.delta_true_net_income = v["delta_true_net_income"]
         p.delta_net_earnings = v["delta_net_earnings"]
@@ -746,7 +732,6 @@ class WelcomeFromQualtrics(Page):
         participant.completion_code = completion_code
 
 
-# STAGE 1: Text baseline
 class Stage1TextPage(Page):
     form_model = "player"
     form_fields = ["stage1_perceived_delta", "stage1_decision"]
@@ -776,10 +761,9 @@ class Stage1TextPage(Page):
         )
 
 
-# STAGE 2: Treatment (Dashboard or ChatGPT)
 class Stage2TreatmentPage(Page):
     form_model = "player"
-    form_fields = ["stage2_perceived_delta", "stage2_decision"]
+    form_fields = ["stage2_perceived_delta", "stage2_decision"]  # CORRECTED: was stage1_perceived_delta
 
     @staticmethod
     def vars_for_template(player: Player):
@@ -807,10 +791,10 @@ class Stage2TreatmentPage(Page):
         )
 
 
-# Feedback page (show reality)
 class FeedbackPage(Page):
     @staticmethod
     def vars_for_template(player: Player):
+        # SAFE error calculation with None checks
         stage1_error = None
         stage2_error = None
 
@@ -832,7 +816,6 @@ class FeedbackPage(Page):
         )
 
 
-# STAGE 3: Reconsideration
 class ReconsiderationPage(Page):
     form_model = "player"
     form_fields = [
@@ -872,10 +855,9 @@ class FinalPageProlific(Page):
         }
 
 
-# PAGE SEQUENCE - CORRECTED
 page_sequence = [
     WelcomeFromQualtrics,
-    Stage1TextPage,  # CORRECTED: was MyPage
+    Stage1TextPage,
     Stage2TreatmentPage,
     FeedbackPage,
     ReconsiderationPage,

@@ -15,55 +15,14 @@ Job Offer Decision - Part 2
         </p>
     </div>
 
-    <!-- Context Header - Same as Stage 1 -->
+    <!-- Context Header -->
     <div style="background-color: #e3f2fd; padding: 20px; margin-bottom: 25px; border-left: 5px solid #2196f3; border-radius: 4px;">
         <h3 style="margin-top: 0; color: #1565c0;">Your Household Information</h3>
-
         <table style="width: 100%; line-height: 1.8;">
             <tr>
                 <td style="padding: 5px 10px 5px 0; width: 40%;"><strong>Your age:</strong></td>
                 <td style="padding: 5px 0;">{{ player.adult_age }} years old</td>
             </tr>
-            <tr>
-                <td style="padding: 5px 10px 5px 0;"><strong>Marital status:</strong></td>
-                <td style="padding: 5px 0;">
-                    {% if player.is_married %}
-                        Married
-                    {% else %}
-                        Single
-                    {% endif %}
-                </td>
-            </tr>
-            {% if player.is_married and player.spouse_age > 0 %}
-            <tr>
-                <td style="padding: 5px 10px 5px 0;"><strong>Spouse's age:</strong></td>
-                <td style="padding: 5px 0;">{{ player.spouse_age }} years old</td>
-            </tr>
-            {% endif %}
-            {% if player.other_adults > 0 %}
-            <tr>
-                <td style="padding: 5px 10px 5px 0;"><strong>Other adults in household:</strong></td>
-                <td style="padding: 5px 0;">
-                    {{ player.other_adults }} {% if player.other_adults == 1 %}adult{% else %}adults{% endif %}
-                </td>
-            </tr>
-            {% endif %}
-            <tr>
-                <td style="padding: 5px 10px 5px 0;"><strong>Children in household:</strong></td>
-                <td style="padding: 5px 0;">
-                    {% if player.num_children > 0 %}
-                        {{ player.num_children }} {% if player.num_children == 1 %}child{% else %}children{% endif %}
-                    {% else %}
-                        No children
-                    {% endif %}
-                </td>
-            </tr>
-            {% if player.num_children > 0 %}
-            <tr>
-                <td style="padding: 5px 10px 5px 0;"><strong>Children's ages:</strong></td>
-                <td style="padding: 5px 0;">{{ player.child_ages_str }}</td>
-            </tr>
-            {% endif %}
             <tr>
                 <td style="padding: 5px 10px 5px 0;"><strong>Location:</strong></td>
                 <td style="padding: 5px 0;">{{ player.county }} County, {{ player.state }}</td>
@@ -76,14 +35,14 @@ Job Offer Decision - Part 2
     <div style="background-color: #e8f5e9; padding: 20px; margin-bottom: 25px; border-left: 5px solid #4caf50; border-radius: 4px;">
         <h3 style="margin-top: 0; color: #2e7d32;">📊 Visual Dashboard View</h3>
         <p style="margin: 0; color: #2e7d32;">
-            Below is a visual comparison of your two options to help you understand the financial impact.
+            Below is a visual comparison of your two options.
         </p>
     </div>
     {% else %}
     <div style="background-color: #e3f2fd; padding: 20px; margin-bottom: 25px; border-left: 5px solid #2196f3; border-radius: 4px;">
         <h3 style="margin-top: 0; color: #1565c0;">💬 AI-Assisted Analysis</h3>
         <p style="margin: 0; color: #1565c0;">
-            Below is an interactive guide to help you understand the financial impact of this decision.
+            Below is an interactive guide to help you understand the financial impact.
         </p>
     </div>
     {% endif %}
@@ -91,30 +50,12 @@ Job Offer Decision - Part 2
     <!-- Scenario Reminder -->
     <div style="background-color: #fff9e6; padding: 20px; margin-bottom: 25px; border-left: 5px solid #ffc107; border-radius: 4px;">
         <h3 style="margin-top: 0; color: #f57c00;">Job Offer Scenario</h3>
-
         <p style="line-height: 1.6; margin-bottom: 12px;">
             <strong>Your current job:</strong> {{ current_job_desc }}
         </p>
         <p style="line-height: 1.6; margin-bottom: 12px;">
             <strong>Job offer:</strong> {{ offer_job_desc }}
         </p>
-
-        {% if opportunity_level == "high" %}
-        <div style="background-color: #e8f5e9; padding: 15px; border-left: 4px solid #4caf50; border-radius: 3px; margin-top: 15px;">
-            <p style="margin: 0; font-weight: bold; color: #2e7d32;">🚀 Career Growth Opportunity</p>
-            <p style="margin: 5px 0 0 0; color: #2e7d32;">{{ mobility_desc }}</p>
-        </div>
-        {% elif opportunity_level == "medium" %}
-        <div style="background-color: #fff3e0; padding: 15px; border-left: 4px solid #ff9800; border-radius: 3px; margin-top: 15px;">
-            <p style="margin: 0; font-weight: bold; color: #e65100;">📈 Some Growth Potential</p>
-            <p style="margin: 5px 0 0 0; color: #e65100;">{{ mobility_desc }}</p>
-        </div>
-        {% else %}
-        <div style="background-color: #f5f5f5; padding: 15px; border-left: 4px solid #9e9e9e; border-radius: 3px; margin-top: 15px;">
-            <p style="margin: 0; font-weight: bold; color: #616161;">➡️ Lateral Move</p>
-            <p style="margin: 5px 0 0 0; color: #616161;">{{ mobility_desc }}</p>
-        </div>
-        {% endif %}
     </div>
 
     <!-- TREATMENT CONTENT -->
@@ -143,7 +84,7 @@ Job Offer Decision - Part 2
                         <div style="font-size: 2.5em; color: #000; font-weight: bold;">
                             ${{ player.cur_true_net_income }}
                         </div>
-                        <div style="font-size: 1em; color: #333; font-weight: bold;">TOTAL MONTHLY RESOURCES</div>
+                        <div style="font-size: 1em; color: #333; font-weight: bold;">TOTAL RESOURCES</div>
                     </div>
                 </div>
 
@@ -166,7 +107,7 @@ Job Offer Decision - Part 2
                         <div style="font-size: 2.5em; color: #1565c0; font-weight: bold;">
                             ${{ player.off_true_net_income }}
                         </div>
-                        <div style="font-size: 1em; color: #1565c0; font-weight: bold;">TOTAL MONTHLY RESOURCES</div>
+                        <div style="font-size: 1em; color: #1565c0; font-weight: bold;">TOTAL RESOURCES</div>
                     </div>
                 </div>
             </div>
@@ -181,61 +122,6 @@ Job Offer Decision - Part 2
                     {% if player.delta_true_net_income > 0 %}+{% endif %}${{ player.delta_true_net_income }}
                 </div>
             </div>
-
-            <!-- Detailed Benefits Breakdown -->
-            <details style="margin-top: 25px;">
-                <summary style="cursor: pointer; font-weight: bold; color: #1976d2; padding: 10px; background-color: #e3f2fd; border-radius: 4px;">
-                    📋 View Detailed Benefits Breakdown
-                </summary>
-                <div style="padding: 20px; background-color: #f9f9f9; margin-top: 10px; border-radius: 4px;">
-                    <table style="width: 100%; border-collapse: collapse;">
-                        <thead>
-                            <tr style="background-color: #e0e0e0;">
-                                <th style="padding: 10px; text-align: left; border: 1px solid #ccc;">Program</th>
-                                <th style="padding: 10px; text-align: right; border: 1px solid #ccc;">Current Job</th>
-                                <th style="padding: 10px; text-align: right; border: 1px solid #ccc;">New Offer</th>
-                                <th style="padding: 10px; text-align: right; border: 1px solid #ccc;">Change</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td style="padding: 8px; border: 1px solid #ddd;">SNAP</td>
-                                <td style="padding: 8px; text-align: right; border: 1px solid #ddd;">${{ player.cur_snap }}</td>
-                                <td style="padding: 8px; text-align: right; border: 1px solid #ddd;">${{ player.off_snap }}</td>
-                                <td style="padding: 8px; text-align: right; border: 1px solid #ddd;">
-                                    {% if player.off_snap - player.cur_snap > 0 %}+{% endif %}${{ player.off_snap - player.cur_snap|floatformat:2 }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 8px; border: 1px solid #ddd;">Medicaid/CHIP</td>
-                                <td style="padding: 8px; text-align: right; border: 1px solid #ddd;">${{ player.cur_medicaid }}</td>
-                                <td style="padding: 8px; text-align: right; border: 1px solid #ddd;">${{ player.off_medicaid }}</td>
-                                <td style="padding: 8px; text-align: right; border: 1px solid #ddd;">
-                                    {% if player.off_medicaid - player.cur_medicaid > 0 %}+{% endif %}${{ player.off_medicaid - player.cur_medicaid|floatformat:2 }}
-                                </td>
-                            </tr>
-                            {% if show_ccdf %}
-                            <tr>
-                                <td style="padding: 8px; border: 1px solid #ddd;">CCDF (childcare)</td>
-                                <td style="padding: 8px; text-align: right; border: 1px solid #ddd;">${{ player.cur_ccdf }}</td>
-                                <td style="padding: 8px; text-align: right; border: 1px solid #ddd;">${{ player.off_ccdf }}</td>
-                                <td style="padding: 8px; text-align: right; border: 1px solid #ddd;">
-                                    {% if player.off_ccdf - player.cur_ccdf > 0 %}+{% endif %}${{ player.off_ccdf - player.cur_ccdf|floatformat:2 }}
-                                </td>
-                            </tr>
-                            {% endif %}
-                            <tr>
-                                <td style="padding: 8px; border: 1px solid #ddd;">EITC</td>
-                                <td style="padding: 8px; text-align: right; border: 1px solid #ddd;">${{ player.cur_eitc }}</td>
-                                <td style="padding: 8px; text-align: right; border: 1px solid #ddd;">${{ player.off_eitc }}</td>
-                                <td style="padding: 8px; text-align: right; border: 1px solid #ddd;">
-                                    {% if player.off_eitc - player.cur_eitc > 0 %}+{% endif %}${{ player.off_eitc - player.cur_eitc|floatformat:2 }}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </details>
         </div>
 
     {% else %}
@@ -272,35 +158,7 @@ Job Offer Decision - Part 2
                         {% endif %}
                     </p>
                 </div>
-
-                <p style="margin: 15px 0 0 0; line-height: 1.6; font-size: 0.95em; color: #666; font-style: italic;">
-                    This calculation includes changes to all your public benefits (SNAP, Medicaid, childcare subsidies, tax credits, etc.) based on the new income level.
-                </p>
             </div>
-
-            <!-- Detailed breakdown -->
-            <details style="margin-top: 25px;">
-                <summary style="cursor: pointer; font-weight: bold; color: #1976d2; padding: 10px; background-color: #e3f2fd; border-radius: 4px;">
-                    📋 See detailed benefit-by-benefit comparison
-                </summary>
-                <div style="padding: 20px; background-color: #f9f9f9; margin-top: 10px; border-radius: 4px;">
-                    <table style="width: 100%; border-collapse: collapse;">
-                        <thead>
-                            <tr style="background-color: #e0e0e0;">
-                                <th style="padding: 10px; text-align: left; border: 1px solid #ccc;">Program</th>
-                                <th style="padding: 10px; text-align: right; border: 1px solid #ccc;">Current</th>
-                                <th style="padding: 10px; text-align: right; border: 1px solid #ccc;">New Offer</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td style="padding: 8px; border: 1px solid #ddd;">SNAP</td><td style="padding: 8px; text-align: right; border: 1px solid #ddd;">${{ player.cur_snap }}</td><td style="padding: 8px; text-align: right; border: 1px solid #ddd;">${{ player.off_snap }}</td></tr>
-                            <tr><td style="padding: 8px; border: 1px solid #ddd;">Medicaid/CHIP</td><td style="padding: 8px; text-align: right; border: 1px solid #ddd;">${{ player.cur_medicaid }}</td><td style="padding: 8px; text-align: right; border: 1px solid #ddd;">${{ player.off_medicaid }}</td></tr>
-                            {% if show_ccdf %}<tr><td style="padding: 8px; border: 1px solid #ddd;">Childcare subsidy</td><td style="padding: 8px; text-align: right; border: 1px solid #ddd;">${{ player.cur_ccdf }}</td><td style="padding: 8px; text-align: right; border: 1px solid #ddd;">${{ player.off_ccdf }}</td></tr>{% endif %}
-                            <tr><td style="padding: 8px; border: 1px solid #ddd;">EITC</td><td style="padding: 8px; text-align: right; border: 1px solid #ddd;">${{ player.cur_eitc }}</td><td style="padding: 8px; text-align: right; border: 1px solid #ddd;">${{ player.off_eitc }}</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </details>
         </div>
     {% endif %}
 
@@ -323,14 +181,14 @@ Job Offer Decision - Part 2
             <h4 style="color: #e65100;">💭 What do you think the financial impact would be?</h4>
 
             <label style="font-weight: bold; display: block; margin-bottom: 10px;">
-    What do you think the change in your monthly total resources would be?
-</label>
-<input type="number"
-       name="stage1_perceived_delta"
-       step="0.01"
-       placeholder="e.g., 150 or -200"
-       required
-       style="width: 100%; padding: 12px; font-size: 1.1em; border: 2px solid #ddd; border-radius: 4px; box-sizing: border-box;">
+                What do you think the change in your monthly total resources would be?
+            </label>
+            <input type="number"
+                   name="stage2_perceived_delta"
+                   step="0.01"
+                   placeholder="e.g., 150 or -200"
+                   required
+                   style="width: 100%; padding: 12px; font-size: 1.1em; border: 2px solid #ddd; border-radius: 4px; box-sizing: border-box;">
 
             <div style="background-color: #fff; padding: 15px; margin-top: 15px; border: 1px solid #ddd; border-radius: 3px;">
                 <p style="margin: 0; font-size: 0.95em; color: #555;">
