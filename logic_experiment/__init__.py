@@ -808,6 +808,17 @@ class FeedbackPage(Page):
             stage2_error = round(player.stage2_perceived_delta - player.delta_true_net_income, 2)
             stage2_error_abs = abs(stage2_error)
 
+        # Calculate benefit changes for template
+        delta_snap = round(player.off_snap - player.cur_snap, 2)
+        delta_medicaid = round(player.off_medicaid - player.cur_medicaid, 2)
+        delta_ccdf = round(player.off_ccdf - player.cur_ccdf, 2)
+        delta_tanf = round(player.off_tanf - player.cur_tanf, 2)
+        delta_wic = round(player.off_wic - player.cur_wic, 2)
+        delta_head_start = round(player.off_head_start - player.cur_head_start, 2)
+        delta_eitc = round(player.off_eitc - player.cur_eitc, 2)
+        delta_ssdi = round(player.off_ssdi - player.cur_ssdi, 2)
+        delta_ssi = round(player.off_ssi - player.cur_ssi, 2)
+
         return dict(
             show_ccdf=player.num_children > 0,
             show_tanf=player.num_children > 0,
@@ -820,6 +831,15 @@ class FeedbackPage(Page):
             stage2_error_abs=stage2_error_abs,
             treatment_format=player.treatment_format,
             delta_abs=abs(player.delta_true_net_income),
+            delta_snap=delta_snap,
+            delta_medicaid=delta_medicaid,
+            delta_ccdf=delta_ccdf,
+            delta_tanf=delta_tanf,
+            delta_wic=delta_wic,
+            delta_head_start=delta_head_start,
+            delta_eitc=delta_eitc,
+            delta_ssdi=delta_ssdi,
+            delta_ssi=delta_ssi,
         )
 
 

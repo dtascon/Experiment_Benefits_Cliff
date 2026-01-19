@@ -166,7 +166,7 @@ Financial Impact Results
                         <td style="text-align: right; padding: 10px;">${{ player.cur_snap }}</td>
                         <td style="text-align: right; padding: 10px;">${{ player.off_snap }}</td>
                         <td style="text-align: right; padding: 10px; font-weight: bold;">
-                            {% if player.off_snap - player.cur_snap > 0 %}+{% endif %}${{ player.off_snap - player.cur_snap|floatformat:2 }}
+                            {% if delta_snap > 0 %}+{% endif %}${{ delta_snap }}
                         </td>
                     </tr>
                     <tr style="border-bottom: 1px solid #ddd;">
@@ -174,7 +174,7 @@ Financial Impact Results
                         <td style="text-align: right; padding: 10px;">${{ player.cur_medicaid }}</td>
                         <td style="text-align: right; padding: 10px;">${{ player.off_medicaid }}</td>
                         <td style="text-align: right; padding: 10px; font-weight: bold;">
-                            {% if player.off_medicaid - player.cur_medicaid > 0 %}+{% endif %}${{ player.off_medicaid - player.cur_medicaid|floatformat:2 }}
+                            {% if delta_medicaid > 0 %}+{% endif %}${{ delta_medicaid }}
                         </td>
                     </tr>
                     {% if show_ccdf %}
@@ -183,7 +183,7 @@ Financial Impact Results
                         <td style="text-align: right; padding: 10px;">${{ player.cur_ccdf }}</td>
                         <td style="text-align: right; padding: 10px;">${{ player.off_ccdf }}</td>
                         <td style="text-align: right; padding: 10px; font-weight: bold;">
-                            {% if player.off_ccdf - player.cur_ccdf > 0 %}+{% endif %}${{ player.off_ccdf - player.cur_ccdf|floatformat:2 }}
+                            {% if delta_ccdf > 0 %}+{% endif %}${{ delta_ccdf }}
                         </td>
                     </tr>
                     {% endif %}
@@ -193,7 +193,7 @@ Financial Impact Results
                         <td style="text-align: right; padding: 10px;">${{ player.cur_tanf }}</td>
                         <td style="text-align: right; padding: 10px;">${{ player.off_tanf }}</td>
                         <td style="text-align: right; padding: 10px; font-weight: bold;">
-                            {% if player.off_tanf - player.cur_tanf > 0 %}+{% endif %}${{ player.off_tanf - player.cur_tanf|floatformat:2 }}
+                            {% if delta_tanf > 0 %}+{% endif %}${{ delta_tanf }}
                         </td>
                     </tr>
                     {% endif %}
@@ -203,7 +203,7 @@ Financial Impact Results
                         <td style="text-align: right; padding: 10px;">${{ player.cur_wic }}</td>
                         <td style="text-align: right; padding: 10px;">${{ player.off_wic }}</td>
                         <td style="text-align: right; padding: 10px; font-weight: bold;">
-                            {% if player.off_wic - player.cur_wic > 0 %}+{% endif %}${{ player.off_wic - player.cur_wic|floatformat:2 }}
+                            {% if delta_wic > 0 %}+{% endif %}${{ delta_wic }}
                         </td>
                     </tr>
                     {% endif %}
@@ -213,7 +213,7 @@ Financial Impact Results
                         <td style="text-align: right; padding: 10px;">${{ player.cur_head_start }}</td>
                         <td style="text-align: right; padding: 10px;">${{ player.off_head_start }}</td>
                         <td style="text-align: right; padding: 10px; font-weight: bold;">
-                            {% if player.off_head_start - player.cur_head_start > 0 %}+{% endif %}${{ player.off_head_start - player.cur_head_start|floatformat:2 }}
+                            {% if delta_head_start > 0 %}+{% endif %}${{ delta_head_start }}
                         </td>
                     </tr>
                     {% endif %}
@@ -222,7 +222,7 @@ Financial Impact Results
                         <td style="text-align: right; padding: 10px;">${{ player.cur_eitc }}</td>
                         <td style="text-align: right; padding: 10px;">${{ player.off_eitc }}</td>
                         <td style="text-align: right; padding: 10px; font-weight: bold;">
-                            {% if player.off_eitc - player.cur_eitc > 0 %}+{% endif %}${{ player.off_eitc - player.cur_eitc|floatformat:2 }}
+                            {% if delta_eitc > 0 %}+{% endif %}${{ delta_eitc }}
                         </td>
                     </tr>
                     {% if show_disability %}
@@ -231,7 +231,7 @@ Financial Impact Results
                         <td style="text-align: right; padding: 10px;">${{ player.cur_ssdi }}</td>
                         <td style="text-align: right; padding: 10px;">${{ player.off_ssdi }}</td>
                         <td style="text-align: right; padding: 10px; font-weight: bold;">
-                            {% if player.off_ssdi - player.cur_ssdi > 0 %}+{% endif %}${{ player.off_ssdi - player.cur_ssdi|floatformat:2 }}
+                            {% if delta_ssdi > 0 %}+{% endif %}${{ delta_ssdi }}
                         </td>
                     </tr>
                     <tr style="border-bottom: 1px solid #ddd;">
@@ -239,7 +239,7 @@ Financial Impact Results
                         <td style="text-align: right; padding: 10px;">${{ player.cur_ssi }}</td>
                         <td style="text-align: right; padding: 10px;">${{ player.off_ssi }}</td>
                         <td style="text-align: right; padding: 10px; font-weight: bold;">
-                            {% if player.off_ssi - player.cur_ssi > 0 %}+{% endif %}${{ player.off_ssi - player.cur_ssi|floatformat:2 }}
+                            {% if delta_ssi > 0 %}+{% endif %}${{ delta_ssi }}
                         </td>
                     </tr>
                     {% endif %}
