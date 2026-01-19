@@ -256,7 +256,15 @@ Job Offer Decision - Part 1
                 what do you think the change would be?
             </p>
 
-            {{ formfield 'stage1_perceived_delta' }}
+            <label style="font-weight: bold; display: block; margin-bottom: 10px;">
+    What do you think the change in your monthly total resources would be?
+</label>
+<input type="number"
+       name="stage1_perceived_delta"
+       step="0.01"
+       placeholder="e.g., 150 or -200"
+       required
+       style="width: 100%; padding: 12px; font-size: 1.1em; border: 2px solid #ddd; border-radius: 4px; box-sizing: border-box;">
 
             <div style="background-color: #fff; padding: 15px; margin-top: 15px; border: 1px solid #ddd; border-radius: 3px;">
                 <p style="margin: 0; font-size: 0.95em; color: #555; line-height: 1.6;">
