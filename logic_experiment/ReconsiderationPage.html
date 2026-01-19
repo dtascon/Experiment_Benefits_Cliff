@@ -18,7 +18,7 @@ Final Questions
     <!-- Summary of Previous Decisions -->
     <div style="background-color: #e3f2fd; padding: 25px; margin-bottom: 30px; border-left: 5px solid #2196f3; border-radius: 4px;">
         <h3 style="margin-top: 0; color: #1565c0;">📋 Summary of Your Decisions</h3>
-        
+
         <div style="background-color: white; padding: 20px; border-radius: 8px; margin-top: 15px;">
             <table style="width: 100%; line-height: 2.5;">
                 <tr>
@@ -40,7 +40,7 @@ Final Questions
                 <tr style="background-color: #f9f9f9;">
                     <td style="padding: 15px 10px;"><strong>Actual financial impact:</strong></td>
                     <td style="padding: 15px 10px;">
-                        <span style="font-size: 1.3em; font-weight: bold; 
+                        <span style="font-size: 1.3em; font-weight: bold;
                             {% if player.delta_true_net_income > 0 %}color: #2e7d32;{% elif player.delta_true_net_income < 0 %}color: #c62828;{% else %}color: #666;{% endif %}">
                             {% if player.delta_true_net_income > 0 %}+{% endif %}${{ player.delta_true_net_income }}/month
                         </span>
@@ -68,39 +68,57 @@ Final Questions
         </div>
     </div>
 
-    <!-- Q3: Reasoning -->
+    <!-- Q3: Main Reason (Simplified to single choice) -->
     <div style="background-color: #f9f9f9; padding: 25px; margin: 30px 0; border-radius: 8px;">
         <h3 style="margin-top: 0; color: #333;">
-            <span style="font-size: 1.3em;">💭</span> Why did you make this choice?
+            <span style="font-size: 1.3em;">💭</span> What was the MAIN reason for your decision?
         </h3>
         <p style="font-size: 0.95em; color: #666; margin-bottom: 20px;">
-            Select all that apply:
+            Select the most important factor:
         </p>
 
         <div style="background-color: white; padding: 25px; border-radius: 8px;">
-            <div style="margin-bottom: 15px;">
-                {{ formfield 'reason_more_money' }}
+            <div style="margin-bottom: 12px;">
+                <label style="display: block; padding: 12px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;">
+                    <input type="radio" name="main_reason" value="more_money" required style="margin-right: 10px;">
+                    The new job offers more total monthly resources
+                </label>
             </div>
-            <div style="margin-bottom: 15px;">
-                {{ formfield 'reason_same_money' }}
+            <div style="margin-bottom: 12px;">
+                <label style="display: block; padding: 12px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;">
+                    <input type="radio" name="main_reason" value="same_money" required style="margin-right: 10px;">
+                    Both options offer about the same monthly resources
+                </label>
             </div>
-            <div style="margin-bottom: 15px;">
-                {{ formfield 'reason_future_opportunities' }}
+            <div style="margin-bottom: 12px;">
+                <label style="display: block; padding: 12px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;">
+                    <input type="radio" name="main_reason" value="future_opportunities" required style="margin-right: 10px;">
+                    Future career growth and advancement opportunities
+                </label>
             </div>
-            <div style="margin-bottom: 15px;">
-                {{ formfield 'reason_salary_important' }}
+            <div style="margin-bottom: 12px;">
+                <label style="display: block; padding: 12px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;">
+                    <input type="radio" name="main_reason" value="higher_salary" required style="margin-right: 10px;">
+                    Higher salary is more important than benefits
+                </label>
             </div>
-            <div style="margin-bottom: 15px;">
-                {{ formfield 'reason_reduce_benefits' }}
+            <div style="margin-bottom: 12px;">
+                <label style="display: block; padding: 12px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;">
+                    <input type="radio" name="main_reason" value="benefits_matter" required style="margin-right: 10px;">
+                    Keeping my current benefits is more important
+                </label>
             </div>
-            <div style="margin-bottom: 15px;">
-                {{ formfield 'reason_job_title' }}
+            <div style="margin-bottom: 12px;">
+                <label style="display: block; padding: 12px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;">
+                    <input type="radio" name="main_reason" value="other" required style="margin-right: 10px;">
+                    Other reason (please specify below)
+                </label>
             </div>
-            <div style="margin-bottom: 15px;">
-                {{ formfield 'reason_not_sure' }}
-            </div>
-            
+
             <div style="margin-top: 25px; padding-top: 20px; border-top: 1px solid #ddd;">
+                <label style="display: block; margin-bottom: 10px; font-weight: bold;">
+                    If "Other", please explain:
+                </label>
                 {{ formfield 'reason_other_text' }}
             </div>
         </div>
