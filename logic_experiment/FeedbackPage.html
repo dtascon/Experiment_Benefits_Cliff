@@ -260,7 +260,7 @@ Financial Impact Results
         <div style="background-color: #fff3cd; padding: 20px; margin-top: 25px; border-left: 5px solid #ffc107; border-radius: 4px;">
             <p style="margin: 0; font-weight: bold; font-size: 1.1em; color: #856404;">⚠️ This was a "benefit cliff" scenario</p>
             <p style="margin: 10px 0 0 0; font-size: 1em; color: #856404;">
-                Earnings would increase by ${{ player.delta_net_earnings }}/month, but total income would <strong>decrease by ${{ player.delta_true_net_income|abs }}/month</strong> due to benefit losses.
+                Earnings would increase by ${{ player.delta_net_earnings }}/month, but total income would <strong>decrease by ${{ delta_abs }}/month</strong> due to benefit losses.
             </p>
             <p style="margin: 10px 0 0 0; font-size: 0.95em; color: #856404;">
                 Programs affected: <strong>{{ player.programs_lost }}</strong> program(s) completely lost, <strong>{{ player.programs_reduced }}</strong> program(s) reduced.
@@ -329,9 +329,9 @@ Financial Impact Results
                     </span>
                 </p>
                 <p style="font-size: 0.9em; color: #666; margin: 5px 0 0 0;">
-                    {% if stage2_error|abs < stage1_error|abs %}
+                    {% if stage2_error_abs < stage1_error_abs %}
                         <strong style="color: #2e7d32;">✓ Your prediction improved!</strong>
-                    {% elif stage2_error|abs > stage1_error|abs %}
+                    {% elif stage2_error_abs > stage1_error_abs %}
                         Your prediction was less accurate.
                     {% else %}
                         Your prediction accuracy was similar.

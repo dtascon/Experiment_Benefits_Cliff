@@ -152,7 +152,7 @@ Job Offer Decision - Part 2
                         {% if player.delta_true_net_income > 0 %}
                             Accepting this offer would <strong>increase</strong> your total monthly resources by <strong>${{ player.delta_true_net_income }}</strong>.
                         {% elif player.delta_true_net_income < 0 %}
-                            Accepting this offer would <strong>decrease</strong> your total monthly resources by <strong>${{ player.delta_true_net_income|abs }}</strong>.
+                            Accepting this offer would <strong>decrease</strong> your total monthly resources by <strong>${{ delta_abs }}</strong>.
                         {% else %}
                             Accepting this offer would result in <strong>about the same</strong> total monthly resources.
                         {% endif %}

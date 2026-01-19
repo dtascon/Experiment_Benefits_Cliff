@@ -763,7 +763,7 @@ class Stage1TextPage(Page):
 
 class Stage2TreatmentPage(Page):
     form_model = "player"
-    form_fields = ["stage2_perceived_delta", "stage2_decision"]  # CORRECTED: was stage1_perceived_delta
+    form_fields = ["stage2_perceived_delta", "stage2_decision"]
 
     @staticmethod
     def vars_for_template(player: Player):
@@ -788,21 +788,25 @@ class Stage2TreatmentPage(Page):
             offer_job_desc=player.offer_job_desc,
             mobility_desc=player.mobility_description,
             treatment_format=player.treatment_format,
+            delta_abs=abs(player.delta_true_net_income),
         )
 
 
 class FeedbackPage(Page):
     @staticmethod
     def vars_for_template(player: Player):
-        # SAFE error calculation with None checks
         stage1_error = None
         stage2_error = None
+        stage1_error_abs = None
+        stage2_error_abs = None
 
         if player.stage1_perceived_delta is not None:
             stage1_error = round(player.stage1_perceived_delta - player.delta_true_net_income, 2)
+            stage1_error_abs = abs(stage1_error)
 
         if player.stage2_perceived_delta is not None:
             stage2_error = round(player.stage2_perceived_delta - player.delta_true_net_income, 2)
+            stage2_error_abs = abs(stage2_error)
 
         return dict(
             show_ccdf=player.num_children > 0,
@@ -812,7 +816,10 @@ class FeedbackPage(Page):
             show_disability=player.has_disability == 1,
             stage1_error=stage1_error,
             stage2_error=stage2_error,
+            stage1_error_abs=stage1_error_abs,
+            stage2_error_abs=stage2_error_abs,
             treatment_format=player.treatment_format,
+            delta_abs=abs(player.delta_true_net_income),
         )
 
 
