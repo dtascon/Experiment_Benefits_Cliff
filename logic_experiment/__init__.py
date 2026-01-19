@@ -813,6 +813,9 @@ class Stage2TreatmentPage(Page):
 class FeedbackPage(Page):
     @staticmethod
     def vars_for_template(player: Player):
+        cur_gross = player.current_hourly_wage * player.current_hours * WEEKS_PER_MONTH
+        off_gross = player.offer_hourly_wage * player.offer_hours * WEEKS_PER_MONTH
+
         stage1_error = None
         stage2_error = None
         stage1_error_abs = None
@@ -838,6 +841,8 @@ class FeedbackPage(Page):
         delta_ssi = round(player.off_ssi - player.cur_ssi, 2)
 
         return dict(
+            current_monthly_gross=round(cur_gross, 2),
+            offer_monthly_gross=round(off_gross, 2),
             show_ccdf=player.num_children > 0,
             show_tanf=player.num_children > 0,
             show_wic=player.num_children > 0,
